@@ -47,11 +47,10 @@ Sample message payload structure:
 - attachments: []
 - comments:
 
-### push notification
+### Push notification
 
 - Emulated push notification.
 - Native push notification.
-
 
 ### Message history management
 
@@ -60,8 +59,13 @@ Sample message payload structure:
 - ACL to message history.
 - Query in payload (delegated to external component).
 
+### Web client
+
+- Simple web client (like, Candy).
+- Web client integrated into an ExtJS app.
 
 ## References
 
-- Website: http://www.process-one.net/en/ejabberd/
+- [ejabberd website](http://www.process-one.net/en/ejabberd/)
 - http://node-xmpp.org/
+- [Candy webchat client](https://github.com/candy-chat)
