@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 'use strict';
 
 var xmpp = require('node-xmpp-client');
