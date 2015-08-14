@@ -17,7 +17,7 @@ In order to run the code, you need a working XMPP server, such as ejabberd.
 - Filtering/grouping recipients by extra properties.
 - Get recipient list by filter criteria.
 - Creating user accounts:
-    - Bulk creation/upload.
+    - ~~Bulk creation/upload.~~
     - From DB or registry like LDAP, etc.
 
 
