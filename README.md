@@ -64,8 +64,29 @@ Sample message payload structure:
 - Simple web client (like, Candy).
 - Web client integrated into an ExtJS app.
 
+## Open topics, and questions
+
+- How to get stream <features>?
+- How to detect and handle <stream:error>?
+- Basic IM use-cases:
+    - Manage items in one's contact list
+    - Exchange messages with one's contacts
+    - Exchange presence information with one's contacts
+    - Manage presence subscriptions to and from one's contacts
+- Handling threads in messages
+- building up a chat session between two parties
+
 ## References
 
 - [ejabberd website](http://www.process-one.net/en/ejabberd/)
-- http://node-xmpp.org/
 - [Candy webchat client](https://github.com/candy-chat)
+
+### node-xmpp related resources
+
+- http://node-xmpp.org/
+- [node-simple-xmpp - Simple High Level NodeJS XMPP Client](https://github.com/simple-xmpp/node-simple-xmpp)
+- [Jabber Object Access Protocol (XEP-0075) library for node-xmpp](https://github.com/flosse/node-xmpp-joap/)
+- [jaredhanson/junction - Essential XMPP middleware for Node.js](https://github.com/jaredhanson/junction)
+- [xmpp-ftw: XMPP For The Web ::: Powerful XMPP, simple JSON](https://xmpp-ftw.jit.su/)
+- [Lightstream: XMPP Framework](https://github.com/dodo/Lightstream)
+- [druid- NodeJS Jabber bot framework](https://www.npmjs.com/package/druid)
