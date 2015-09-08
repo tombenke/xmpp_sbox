@@ -25,22 +25,17 @@ describe('XmppClient', function () {
                     cb();
                 });
 
-                client1.on('stanza', function (xml) {
-
-               console.log("received1 " + xml);
-
+                client1.on('presence', function (xml) {
                     parseString(xml, function (err, stanza) {
 
-                        if (stanza.presence) {
-                            if (stanza.presence.type) {
+                        if (stanza.presence.type) {
 
-                                console.log('+++')
-                                client1.disconnect();
-                                client2.disconnect();
-                                done();
-                            }
+                            console.log('+++')
+                            client1.disconnect();
+                            client2.disconnect();
+                            done();
                         }
-                        
+
                     });
                 });
             },
@@ -52,14 +47,8 @@ describe('XmppClient', function () {
                     host:     'localhost'
                 });
 
-                client2.on('stanza', function (xml) {
-                    console.log("received2 " + xml);
-
+                client2.on('presence', function (xml) {
                     client2.sendSubscriptionAck('user01@clc');
-
-
-
-                    
                 })
 
                 client2.on('online', function () {
