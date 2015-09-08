@@ -16,9 +16,8 @@ describe('XmppClient', function () {
             host:     'localhost'
         });
 
-        client.on('stanza', function(xml) {
+        client.on('presence', function(xml) {
             parseString(xml, function (err, stanza) {
-
                 stanza.should.have.property('presence');
 
                 stanza.presence.$.should.have.property('to');
