@@ -19,6 +19,7 @@ describe('XmppClient', function () {
         client.on('stanza', function(xml) {
             parseString(xml, function (err, stanza) {
                 stanza.should.have.property('presence');
+
                 stanza.presence.should.have.property('show');
                 stanza.presence.show[0].should.be.eql('chat');
 
