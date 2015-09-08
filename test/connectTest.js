@@ -19,7 +19,9 @@ describe('XmppClient', function () {
             data.jid.should.have.property('domain', 'clc');
             data.jid.should.have.property('resource');
             data.jid.should.have.property('user', 'user01');
-            done();
+
+            client.disconnect();
+            done();         
         });
 
     });

@@ -11,10 +11,12 @@
   "dependencies": {
     "ltx": "^0.9.1",
     "node-xmpp-client": "^1.0.0-alpha23",
-    "lodash": "~3.10.1"
+    "lodash": "~3.10.1",
+    "strophe": "~1.2.2"
   },
   "devDependencies": {
     "should": "~7.1.0",
-    "async": "~1.4.2"
+    "async": "~1.4.2",
+    "xml2js": "~0.4.12"
   }
 }
