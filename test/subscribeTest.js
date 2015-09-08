@@ -9,7 +9,6 @@ var parseString = require('xml2js').parseString;
 
 describe('XmppClient', function () {
     it('should send subscription', function (done) {
-
         var client1, client2;
 
         async.series([
@@ -28,9 +27,22 @@ describe('XmppClient', function () {
                 client1.on('presence', function (xml) {
                     parseString(xml, function (err, stanza) {
 
-                        if (stanza.presence.type) {
+                        if (stanza.presence.$.from.split('/')[0] === 'user02@clc') {
 
-                            console.log('+++')
+                            stanza.should.have.property('presence');
+
+                            stanza.presence.$.should.have.property('to');
+                            stanza.presence.$.to.split('/')[0].should.be.eql('user01@clc');
+
+                            stanza.presence.$.should.have.property('from');
+                            stanza.presence.$.from.split('/')[0].should.be.eql('user02@clc');
+
+                            stanza.presence.should.have.property('show');
+                            stanza.presence.show[0].should.be.eql('chat');
+
+                            stanza.presence.should.have.property('status');
+                            stanza.presence.status[0].should.be.eql('available');
+
                             client1.disconnect();
                             client2.disconnect();
                             done();
@@ -48,7 +60,7 @@ describe('XmppClient', function () {
                 });
 
                 client2.on('presence', function (xml) {
-                    client2.sendSubscriptionAck('user01@clc');
+                    client2.sendSubscriptionApp('user01@clc');
                 })
 
                 client2.on('online', function () {
