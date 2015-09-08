@@ -12,7 +12,8 @@
     "ltx": "^0.9.1",
     "node-xmpp-client": "^1.0.0-alpha23",
     "lodash": "~3.10.1",
-    "strophe": "~1.2.2"
+    "strophe": "~1.2.2",
+    "bunyan": "~1.5.1"
   },
   "devDependencies": {
     "should": "~7.1.0",
