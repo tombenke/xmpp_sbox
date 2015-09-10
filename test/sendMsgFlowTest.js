@@ -2,6 +2,7 @@
 'use strict';
 
 var XmppClient = require('../lib/XmppClient');
+var c = XmppClient.constants;
 var should = require('should');
 var async = require('async');
 var parseString = require('xml2js').parseString;
@@ -25,7 +26,7 @@ describe('XmppClient messaging workflow', function () {
             },
             // Han Solo announces presence
             function (cb) {                    
-                han.sendPresence('chat', 'I\'m here.', function () {
+                han.presence(c.presence.CHAT, 'I\'m here.', function () {
                     cb();
                 });
             },
@@ -38,7 +39,7 @@ describe('XmppClient messaging workflow', function () {
             },
             // Chewbacca announces presence
             function (cb) {
-                chewie.sendPresence('chat', 'Rrrrrrr-ghghghghgh!', function () {
+                chewie.presence(c.presence.CHAT, 'Rrrrrrr-ghghghghgh!', function () {
                     cb();
                 });
             },
