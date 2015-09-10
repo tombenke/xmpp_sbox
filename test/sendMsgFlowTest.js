@@ -19,44 +19,28 @@ describe('XmppClient messaging workflow', function () {
             // Han Solo goes online
             function (cb) {
                 han = new XmppClient(users().Han_Solo);
-
-                han.on('online', function () {
+                han.connect(function () {
                     cb();
                 });
             },
             // Han Solo announces presence
-            function (cb) {
-                var msgId = counter++ + '';
-                han.on('presence', function (xml) {
-                    parseString(xml, function (err, stanza) {
-                        if (stanza.presence.$.id === msgId) {
-                            cb();
-                        }
-                    });
+            function (cb) {                    
+                han.sendPresence('chat', 'I\'m here.', function () {
+                    cb();
                 });
-                    
-                han.sendPresence('chat', 'I\'m here.', msgId);
             },
             // Chewbacca goes online
             function (cb) {
                 chewie = new XmppClient(users().Chewie);
-
-                chewie.on('online', function () {
+                chewie.connect(function () {
                     cb();
-                });
+                })
             },
             // Chewbacca announces presence
             function (cb) {
-                var msgId = counter++ + '';
-                chewie.on('presence', function (xml) {
-                    parseString(xml, function (err, stanza) {
-                        if (stanza.presence.$.id === msgId) {
-                            cb();
-                        }
-                    });
+                chewie.sendPresence('chat', 'Rrrrrrr-ghghghghgh!', function () {
+                    cb();
                 });
-                    
-                chewie.sendPresence('chat', 'Rrrrrrr-ghghghghgh!', msgId);
             },
             /*// Han sends subscription request to Chewie
             function (cb) {
