@@ -7,8 +7,11 @@ var async = require('async');
 var parseString = require('xml2js').parseString;
 var users = require('../test/testParameters').users;
 
+var counter = 1;
+
 describe('XmppClient messaging workflow', function () {
     it('clients should send messages to each other', function (done) {
+        this.timeout(3000);
 
         var han, chewie;
 
@@ -18,56 +21,107 @@ describe('XmppClient messaging workflow', function () {
                 han = new XmppClient(users().Han_Solo);
 
                 han.on('online', function () {
-                    han.sendPresence('chat', 'I\'m here.');
                     cb();
                 });
+            },
+            // Han Solo announces presence
+            function (cb) {
+                var msgId = counter++ + '';
+                han.on('presence', function (xml) {
+                    parseString(xml, function (err, stanza) {
+                        if (stanza.presence.$.id === msgId) {
+                            cb();
+                        }
+                    });
+                });
+                    
+                han.sendPresence('chat', 'I\'m here.', msgId);
             },
             // Chewbacca goes online
             function (cb) {
                 chewie = new XmppClient(users().Chewie);
 
                 chewie.on('online', function () {
-                    chewie.sendPresence('chat', 'Rrrrrrr-ghghghghgh!');
                     cb();
                 });
             },
-            // Han sends subscription request to Chewie, Chewie approves
+            // Chewbacca announces presence
             function (cb) {
+                var msgId = counter++ + '';
                 chewie.on('presence', function (xml) {
                     parseString(xml, function (err, stanza) {
-                        if (stanza.presence.$.type === 'subscribe' && extractJid(stanza.presence.$.from) === users().Han_Solo.jid) {
-                            chewie.sendSubscriptionApp(users().Han_Solo.jid);
+                        if (stanza.presence.$.id === msgId) {
+                            cb();
+                        }
+                    });
+                });
+                    
+                chewie.sendPresence('chat', 'Rrrrrrr-ghghghghgh!', msgId);
+            },
+            /*// Han sends subscription request to Chewie
+            function (cb) {
+                var msgId = counter++ + '';
+                chewie.on('presence', function (xml) {
+                    parseString(xml, function (err, stanza) {
+                        if (stanza.presence.$.id === msgId) {
                             cb();
                         }
                     });
                 });
 
-                han.sendSubscriptionReq(users().Chewie.jid);
+                han.sendSubscriptionReq(users().Chewie.jid, msgId);
+            },
+            // Chewie approves Han's subscription request
+            function (cb) {
+                var msgId = counter++ + '';
+                han.on('presence', function (xml) {
+                    parseString(xml, function (err, stanza) {
+                        if (stanza.presence.$.id === msgId) {
+                            cb();
+                        }
+                    });
+                });
+
+                chewie.sendSubscriptionApp(users().Han_Solo.jid, msgId);
             },
             // Chewie sends subscription request to Han, Han approves
             function (cb) {
+                var msgId = counter++ + '';
                 han.on('presence', function (xml) {
                     parseString(xml, function (err, stanza) {
-                        if (stanza.presence.$.type === 'subscribe' && extractJid(stanza.presence.$.from) === users().Chewie.jid) {
-                            han.sendSubscriptionApp(users().Chewie.jid);
+                        if (stanza.presence.$.id === msgId) {
                             cb();
                         }
                     });
                 });
 
-                chewie.sendSubscriptionReq(users().Han_Solo.jid);
+                chewie.sendSubscriptionReq(users().Han_Solo.jid, msgId);
+            },
+            // Han approves Chewie's subscription request
+            function (cb) {
+                var msgId = counter++ + '';
+                chewie.on('presence', function (xml) {
+                    parseString(xml, function (err, stanza) {
+                        if (stanza.presence.$.id === msgId) {
+                            cb();
+                        }
+                    });
+                });
+                            
+                han.sendSubscriptionApp(users().Chewie.jid);
             },
             //
             function (cb) {
+                var msgId = counter++ + '';
                 han.on('iq', function (xml) {
                     parseString(xml, function (err, stanza) {
-                        if (stanza.iq.$.id === '1') {
+                        if (stanza.iq.$.id === msgId) {
                             cb();
                         }
                     });
                 });
 
-                han.sendRosterGet('1');
+                han.sendRosterGet(msgId);
             },
             // Han removes Chewie from roster and subscription
             function (cb) {
@@ -93,7 +147,7 @@ describe('XmppClient messaging workflow', function () {
                 });
 
                 chewie.sendRemove(users().Han_Solo.jid, 3);
-            },
+            },*/
             // Test end
             function () {
                 han.disconnect();
