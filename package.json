@@ -1,24 +1,18 @@
 {
-  "name": "xmpp_sbox",
-  "version": "1.0.0",
-  "description": "XMPP sandbox",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "tombenke",
-  "license": "MIT",
-  "dependencies": {
-    "ltx": "^0.9.1",
-    "node-xmpp-client": "^1.0.0-alpha23",
-    "lodash": "~3.10.1",
-    "strophe": "~1.2.2",
-    "winston": "~1.0.1",
-    "pretty-data2": "~0.40.1"
-  },
-  "devDependencies": {
-    "should": "~7.1.0",
-    "async": "~1.4.2",
-    "xml2js": "~0.4.12"
-  }
+    "name": "xmpp_sbox",
+    "version": "1.0.0",
+    "description": "XMPP sandbox",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "tombenke",
+    "license": "MIT",
+    "dependencies": {
+        "stanza.io": "^7.3.4"    
+    },
+    "devDependencies": {
+        "should": "~7.1.0",
+        "async": "~1.4.2"
+    }
 }

@@ -81,12 +81,6 @@ Sample message payload structure:
 - [ejabberd website](http://www.process-one.net/en/ejabberd/)
 - [Candy webchat client](https://github.com/candy-chat)
 
-### node-xmpp related resources
+### stanza.io related resources
 
-- http://node-xmpp.org/
-- [node-simple-xmpp - Simple High Level NodeJS XMPP Client](https://github.com/simple-xmpp/node-simple-xmpp)
-- [Jabber Object Access Protocol (XEP-0075) library for node-xmpp](https://github.com/flosse/node-xmpp-joap/)
-- [jaredhanson/junction - Essential XMPP middleware for Node.js](https://github.com/jaredhanson/junction)
-- [xmpp-ftw: XMPP For The Web ::: Powerful XMPP, simple JSON](https://xmpp-ftw.jit.su/)
-- [Lightstream: XMPP Framework](https://github.com/dodo/Lightstream)
-- [druid- NodeJS Jabber bot framework](https://www.npmjs.com/package/druid)
+- https://github.com/otalk/stanza.io
