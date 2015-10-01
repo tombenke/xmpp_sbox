@@ -37,14 +37,14 @@ describe('stanza.io messaging workflow', function () {
                     jid: users.Chewie.jid,
                     password: users.Chewie.password,
                     wsURL: 'ws://localhost:5280/websocket',
-                    transports: ['websocket']
+                    transport: 'websocket'
                 });
 
                 han = XMPP.createClient({
                     jid: users.Han_Solo.jid,
                     password: users.Han_Solo.password,
                     wsURL: 'ws://localhost:5280/websocket',
-                    transports: ['websocket']
+                    transport: 'websocket'
                 });
               
                 cb();
