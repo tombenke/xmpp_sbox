@@ -4,7 +4,7 @@
 var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
-var prettyjson = require('prettyjson');
+var log = require('../libs/log');
 
 var options = {
   noColor: true
@@ -100,7 +100,8 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.on('message', function (msg) {
-                    console.log('Han\'s message to Chewie:\n' + prettyjson.render(msg, users.Han_Solo.debugOptions) + '\n');
+                    //console.log('Han\'s message to Chewie:\n' + prettyjson.render(msg, users.Han_Solo.debugOptions) + '\n');
+                    log(msg, users.Han_Solo.debugOptions);
                     cb();
                 });
                 han.sendMessage({
@@ -111,7 +112,8 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.on('message', function (msg) {
-                    console.log('Chewie\'s message to Han:\n' + prettyjson.render(msg, users.Chewie.debugOptions) + '\n');
+                    //console.log('Chewie\'s message to Han:\n' + prettyjson.render(msg, users.Chewie.debugOptions) + '\n');
+                    log(msg, users.Chewie.debugOptions);
                     cb();
                 });
                 chewie.sendMessage({
