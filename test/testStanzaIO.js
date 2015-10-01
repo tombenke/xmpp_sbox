@@ -31,8 +31,6 @@ describe('stanza.io messaging workflow', function () {
             // Create client object for Chewbacca
             function (cb) {
                 chewie = XMPP.createClient({
-                    /*jid: 'chewbacca@localhost',
-                    password: 'pass123',*/
                     jid: users.Chewie.jid,
                     password: users.Chewie.password,
                     wsURL: 'ws://localhost:5280/websocket',
@@ -105,7 +103,6 @@ describe('stanza.io messaging workflow', function () {
             // Set incoming message listener for Chewie to catch Han's message sent after
             function (cb) {
                 chewie.on('message', function (msg) {
-                    //console.log();
                     console.log('Han\'s message to Chewie:\n' + JSON.stringify(msg) + '\n');
                     cb();
                 });
@@ -118,7 +115,6 @@ describe('stanza.io messaging workflow', function () {
             // Set incoming message listener for Han to catch Chewie's response message sent after
             function (cb) {
                 han.on('message', function (msg) {
-                    //console.log();
                     console.log('Chewie\'s message to Han:\n' + JSON.stringify(msg) + '\n');
                     cb();
                 });
