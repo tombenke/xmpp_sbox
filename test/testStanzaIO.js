@@ -43,11 +43,6 @@ describe('stanza.io messaging workflow', function () {
                     transports: ['websocket']
                 });
 
-                cb();
-            },
-
-            // Create client object for Han Solo
-            function (cb) {
                 han = XMPP.createClient({
                     jid: users.Han_Solo.jid,
                     password: users.Han_Solo.password,
