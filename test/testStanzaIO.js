@@ -126,7 +126,7 @@ describe('stanza.io messaging workflow', function () {
             },
 
             // Test end
-            function (cb) {
+            function () {
                 done();
             }
         ]);
