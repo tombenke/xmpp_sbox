@@ -14,12 +14,18 @@ var users = {
     'Han_Solo': {
         jid:      'han.solo@localhost',
         password: 'pass123',
-        host:     'localhost'
+        host:     'localhost',
+        debugOptions: {
+            keysColor: 'blue'
+        }
     },
     'Chewie': {
         jid:      'chewbacca@localhost',
         password: 'pass123',
-        host:     'localhost'
+        host:     'localhost',
+        debugOptions: {
+            keysColor: 'yellow'
+        }
     }
 };
   
@@ -94,7 +100,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.on('message', function (msg) {
-                    console.log('Han\'s message to Chewie:\n' + prettyjson.render(msg, options) + '\n');
+                    console.log('Han\'s message to Chewie:\n' + prettyjson.render(msg, users.Han_Solo.debugOptions) + '\n');
                     cb();
                 });
                 han.sendMessage({
@@ -105,7 +111,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.on('message', function (msg) {
-                    console.log('Chewie\'s message to Han:\n' + prettyjson.render(msg, options) + '\n');
+                    console.log('Chewie\'s message to Han:\n' + prettyjson.render(msg, users.Chewie.debugOptions) + '\n');
                     cb();
                 });
                 chewie.sendMessage({
