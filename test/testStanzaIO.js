@@ -6,12 +6,10 @@ var should = require('should');
 var async = require('async');
 var prettyjson = require('prettyjson');
 
-// Options for prettyJSON
 var options = {
   noColor: true
 };
 
-// Custom user data for testing
 var users = {
     'Han_Solo': {
         jid:      'han.solo@localhost',
@@ -33,8 +31,7 @@ describe('stanza.io messaging workflow', function () {
         this.timeout(5000);
 
         async.series([
-            
-            // Create client object for Chewbacca
+
             function (cb) {
                 chewie = XMPP.createClient({
                     jid: users.Chewie.jid,
@@ -53,7 +50,6 @@ describe('stanza.io messaging workflow', function () {
                 cb();
             },
 
-            // Set session start listener for Chewbacca
             function (cb) {
                 chewie.once('session:started', function () {
                     cb();
@@ -62,14 +58,12 @@ describe('stanza.io messaging workflow', function () {
                 chewie.connect();
             },
 
-            // Get roster for Chewbacca
             function (cb) {
                 chewie.getRoster(function (err, resp) {
                     cb();
                 });
             },
 
-            // Chewbacca announces presence
             function (cb) {
                 chewie.sendPresence({
                     
@@ -77,7 +71,6 @@ describe('stanza.io messaging workflow', function () {
                 cb();
             },
 
-            // Set session start listener for Han Solo
             function (cb) {
                 han.once('session:started', function () {
                     cb();
@@ -86,14 +79,12 @@ describe('stanza.io messaging workflow', function () {
                 han.connect();
             },
 
-            // Get roster for Han Solo
             function (cb) {
                 han.getRoster(function (err, resp) {
                     cb();
                 });
             },
 
-            // Han Solo announces presence
             function (cb) {
                 han.sendPresence({
                     
@@ -101,7 +92,6 @@ describe('stanza.io messaging workflow', function () {
                 cb();
             },
 
-            // Set incoming message listener for Chewie to catch Han's message sent after
             function (cb) {
                 chewie.on('message', function (msg) {
                     console.log('Han\'s message to Chewie:\n' + prettyjson.render(msg, options) + '\n');
@@ -113,7 +103,6 @@ describe('stanza.io messaging workflow', function () {
                 });
             },
 
-            // Set incoming message listener for Han to catch Chewie's response message sent after
             function (cb) {
                 han.on('message', function (msg) {
                     console.log('Chewie\'s message to Han:\n' + prettyjson.render(msg, options) + '\n');
@@ -125,14 +114,12 @@ describe('stanza.io messaging workflow', function () {
                 });
             },
 
-            // Test end
             function () {
                 done();
             }
         ]);
     });
 
-    //Call disconnect functions to make sure all test users disconnected, even if test fails
     after(function() {
         chewie.disconnect();
         han.disconnect();
