@@ -1,5 +1,5 @@
 var prettyjson = require('prettyjson');
 
-module.exports = function log(data, options) {
-	console.log(prettyjson.render(data, options) + '\n');	
+module.exports = function log(options, logEntry) {
+	console.log(prettyjson.render(logEntry, options));
 };

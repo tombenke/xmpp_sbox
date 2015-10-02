@@ -6,10 +6,6 @@ var should = require('should');
 var async = require('async');
 var log = require('../libs/log');
 
-var options = {
-  noColor: true
-};
-
 var users = {
     'Han_Solo': {
         jid:      'han.solo@localhost',
@@ -100,8 +96,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.on('message', function (msg) {
-                    //console.log('Han\'s message to Chewie:\n' + prettyjson.render(msg, users.Han_Solo.debugOptions) + '\n');
-                    log(msg, users.Han_Solo.debugOptions);
+                    log(users.Han_Solo.debugOptions, msg);
                     cb();
                 });
                 han.sendMessage({
@@ -112,8 +107,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.on('message', function (msg) {
-                    //console.log('Chewie\'s message to Han:\n' + prettyjson.render(msg, users.Chewie.debugOptions) + '\n');
-                    log(msg, users.Chewie.debugOptions);
+                    log(users.Chewie.debugOptions, msg);
                     cb();
                 });
                 chewie.sendMessage({
