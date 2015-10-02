@@ -6,7 +6,7 @@ var should = require('should');
 var async = require('async');
 var log = require('../libs/log');
 
-var debug = true;
+var debug = false;
 
 var users = {
     'Han_Solo': {
@@ -32,7 +32,7 @@ describe('stanza.io messaging workflow', function () {
     var han, chewie;
 
     it('Clients should connect and send messages to each other', function (done) {
-        this.timeout(5000);
+        this.timeout(20000);
 
         async.series([
 
@@ -121,6 +121,70 @@ describe('stanza.io messaging workflow', function () {
             },
 
             function (cb) {
+                chewie.subscribe(users.Han_Solo.jid);
+                cb();
+            },
+
+            function (cb) {
+                han.subscribe(users.Chewie.jid);
+                cb();
+            },
+
+            function (cb) {
+                han.getRoster(function (err, resp) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        log(users.Han_Solo.debugOptions, resp);
+                    }
+                    cb();
+                });
+            },
+
+            function (cb) {
+                chewie.getRoster(function (err, resp) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        log(users.Chewie.debugOptions, resp);
+                    }
+                    cb();
+                });
+            },
+
+            function (cb) {
+                chewie.acceptSubscription(users.Han_Solo.jid);
+                cb();
+            },
+
+            function (cb) {
+                han.acceptSubscription(users.Chewie.jid);
+                cb();
+            },
+
+            function (cb) {
+                han.getRoster(function (err, resp) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        log(users.Han_Solo.debugOptions, resp);
+                    }
+                    cb();
+                });
+            },
+
+            function (cb) {
+                chewie.getRoster(function (err, resp) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        log(users.Chewie.debugOptions, resp);
+                    }
+                    cb();
+                });
+            },
+
+            function (cb) {
                 chewie.on('message', function (msg) {
                     log(users.Han_Solo.debugOptions, msg);
                     cb();
@@ -142,6 +206,38 @@ describe('stanza.io messaging workflow', function () {
                 });
             },
 
+            function (cb) {
+                han.unsubscribe(users.Chewie.jid);
+                cb();
+            },
+
+            function (cb) {
+                chewie.unsubscribe(users.Han_Solo.jid);
+                cb();
+            },
+
+            function (cb) {
+                chewie.getRoster(function (err, resp) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        log(users.Chewie.debugOptions, resp);
+                    }
+                    cb();
+                });
+            },
+
+            function (cb) {
+                han.getRoster(function (err, resp) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        log(users.Han_Solo.debugOptions, resp);
+                    }
+                    cb();
+                });
+            },
+
             function () {
                 done();
             }
@@ -149,6 +245,20 @@ describe('stanza.io messaging workflow', function () {
     });
 
     after(function() {
+        chewie.removeRosterItem(users.Han_Solo.jid, function (err, resp) {
+            if (err) {
+                console.log(err);
+            } else {
+                log(users.Chewie.debugOptions, resp);
+            }
+        });
+        han.removeRosterItem(users.Chewie.jid, function (err, resp) {
+            if (err) {
+                console.log(err);
+            } else {
+                log(users.Han_Solo.debugOptions, resp);
+            }
+        });
         chewie.disconnect();
         han.disconnect();
     });
