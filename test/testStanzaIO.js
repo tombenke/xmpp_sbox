@@ -62,6 +62,11 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.getRoster(function (err, resp) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        log(users.Chewie.debugOptions, resp);
+                    }
                     cb();
                 });
             },
@@ -83,6 +88,11 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.getRoster(function (err, resp) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        log(users.Han_Solo.debugOptions, resp);
+                    }
                     cb();
                 });
             },
