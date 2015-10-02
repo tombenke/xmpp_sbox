@@ -6,6 +6,8 @@ var should = require('should');
 var async = require('async');
 var log = require('../libs/log');
 
+var debug = true;
+
 var users = {
     'Han_Solo': {
         jid:      'han.solo@localhost',
@@ -49,6 +51,20 @@ describe('stanza.io messaging workflow', function () {
                     transport: 'websocket'
                 });
               
+                cb();
+            },
+
+            function (cb) {
+                if (debug === true) {
+                    chewie.on('*', function (name, data) {
+                        log(users.Chewie.debugOptions, name, data);
+                        //log(users.Chewie.debugOptions, data);
+                    });
+                    han.on('*', function (name, data) {
+                        log(users.Han_Solo.debugOptions, name, data);
+                        //log(users.Han_Solo.debugOptions, data);
+                    });
+                }
                 cb();
             },
 
