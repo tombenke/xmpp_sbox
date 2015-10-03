@@ -14,7 +14,7 @@ var users = {
         password: 'pass123',
         host:     'localhost',
         debugOptions: {
-            keysColor: 'blue'
+            keysColor: 'cyan'
         }
     },
     'Chewie': {
