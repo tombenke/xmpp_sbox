@@ -149,6 +149,14 @@ describe('stanza.io messaging workflow', function () {
                     if (err) {
                         console.log(err);
                     } else {
+                        try {
+                            should(resp).have.property('roster');
+                            should(resp.roster).have.property('items')
+                            resp.roster.items[0].jid.full.should.equal(users.Chewie.jid);
+                            resp.roster.items[0].subscription.should.equal('none');
+                        } catch (err) {
+                            console.log(err);
+                        }
                         log(users.Han_Solo.debugOptions, resp);
                     }
                     cb();
@@ -160,6 +168,14 @@ describe('stanza.io messaging workflow', function () {
                     if (err) {
                         console.log(err);
                     } else {
+                        try {
+                            should(resp).have.property('roster');
+                            should(resp.roster).have.property('items')
+                            resp.roster.items[0].jid.full.should.equal(users.Han_Solo.jid);
+                            resp.roster.items[0].subscription.should.equal('none');
+                        } catch (err) {
+                            console.log(err);
+                        }
                         log(users.Chewie.debugOptions, resp);
                     }
                     cb();
