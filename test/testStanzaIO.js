@@ -81,6 +81,13 @@ describe('stanza.io messaging workflow', function () {
                     if (err) {
                         console.log(err);
                     } else {
+                        try {
+                            should(resp).have.property('roster');
+                            should(resp).have.property('from')
+                            resp.from.full.should.equal(users.Chewie.jid);
+                        } catch (err) {
+                            console.log(err);
+                        }
                         log(users.Chewie.debugOptions, resp);
                     }
                     cb();
