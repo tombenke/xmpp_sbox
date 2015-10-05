@@ -81,13 +81,9 @@ describe('stanza.io messaging workflow', function () {
                     if (err) {
                         console.log(err);
                     } else {
-                        try {
-                            should(resp).have.property('roster');
-                            should(resp).have.property('from')
-                            resp.from.full.should.equal(users.Chewie.jid);
-                        } catch (err) {
-                            console.log(err);
-                        }
+                        should(resp).have.property('roster');
+                        should(resp).have.property('from')
+                        resp.from.full.should.equal(users.Chewie.jid);
                         log(users.Chewie.debugOptions, resp);
                     }
                     cb();
@@ -114,13 +110,9 @@ describe('stanza.io messaging workflow', function () {
                     if (err) {
                         console.log(err);
                     } else {
-                        try {
-                            should(resp).have.property('roster');
-                            should(resp).have.property('from')
-                            resp.from.full.should.equal(users.Han_Solo.jid);
-                        } catch (err) {
-                            console.log(err);
-                        }
+                        should(resp).have.property('roster');
+                        should(resp).have.property('from')
+                        resp.from.full.should.equal(users.Han_Solo.jid);
                         log(users.Han_Solo.debugOptions, resp);
                     }
                     cb();
@@ -149,14 +141,10 @@ describe('stanza.io messaging workflow', function () {
                     if (err) {
                         console.log(err);
                     } else {
-                        try {
-                            should(resp).have.property('roster');
-                            should(resp.roster).have.property('items')
-                            resp.roster.items[0].jid.full.should.equal(users.Chewie.jid);
-                            resp.roster.items[0].subscription.should.equal('none');
-                        } catch (err) {
-                            console.log(err);
-                        }
+                        should(resp).have.property('roster');
+                        should(resp.roster).have.property('items')
+                        resp.roster.items[0].jid.full.should.equal(users.Chewie.jid);
+                        resp.roster.items[0].subscription.should.equal('none');
                         log(users.Han_Solo.debugOptions, resp);
                     }
                     cb();
@@ -168,14 +156,10 @@ describe('stanza.io messaging workflow', function () {
                     if (err) {
                         console.log(err);
                     } else {
-                        try {
-                            should(resp).have.property('roster');
-                            should(resp.roster).have.property('items')
-                            resp.roster.items[0].jid.full.should.equal(users.Han_Solo.jid);
-                            resp.roster.items[0].subscription.should.equal('none');
-                        } catch (err) {
-                            console.log(err);
-                        }
+                        should(resp).have.property('roster');
+                        should(resp.roster).have.property('items')
+                        resp.roster.items[0].jid.full.should.equal(users.Han_Solo.jid);
+                        resp.roster.items[0].subscription.should.equal('none');
                         log(users.Chewie.debugOptions, resp);
                     }
                     cb();
@@ -197,14 +181,10 @@ describe('stanza.io messaging workflow', function () {
                     if (err) {
                         console.log(err);
                     } else {
-                        try {
-                            should(resp).have.property('roster');
-                            should(resp.roster).have.property('items')
-                            resp.roster.items[0].jid.full.should.equal(users.Chewie.jid);
-                            resp.roster.items[0].subscription.should.equal('both');
-                        } catch (err) {
-                            console.log(err);
-                        }
+                        should(resp).have.property('roster');
+                        should(resp.roster).have.property('items')
+                        resp.roster.items[0].jid.full.should.equal(users.Chewie.jid);
+                        resp.roster.items[0].subscription.should.equal('both');
                         log(users.Han_Solo.debugOptions, resp);
                     }
                     cb();
@@ -216,14 +196,10 @@ describe('stanza.io messaging workflow', function () {
                     if (err) {
                         console.log(err);
                     } else {
-                        try {
-                            should(resp).have.property('roster');
-                            should(resp.roster).have.property('items')
-                            resp.roster.items[0].jid.full.should.equal(users.Han_Solo.jid);
-                            resp.roster.items[0].subscription.should.equal('both');
-                        } catch (err) {
-                            console.log(err);
-                        }
+                        should(resp).have.property('roster');
+                        should(resp.roster).have.property('items')
+                        resp.roster.items[0].jid.full.should.equal(users.Han_Solo.jid);
+                        resp.roster.items[0].subscription.should.equal('both');
                         log(users.Chewie.debugOptions, resp);
                     }
                     cb();
