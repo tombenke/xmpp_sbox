@@ -208,6 +208,9 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.on('message', function (msg) {
+                    should(msg).have.property('to');
+                    msg.to.full.should.equal(users.Chewie.jid);
+                    should(msg).have.property('body', 'Chewie, are you there?');
                     log(users.Han_Solo.debugOptions, msg);
                     cb();
                 });
@@ -219,6 +222,9 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.on('message', function (msg) {
+                    should(msg).have.property('to');
+                    msg.to.full.should.equal(users.Han_Solo.jid);
+                    should(msg).have.property('body', 'Rrrrrrr-ghghghghgh!');
                     log(users.Chewie.debugOptions, msg);
                     cb();
                 });
