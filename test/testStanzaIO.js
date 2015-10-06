@@ -137,6 +137,12 @@ describe('stanza.io messaging workflow', function () {
             },
 
             function (cb) {
+                setTimeout(function () {
+                    cb();
+                }, 100);
+            },
+
+            function (cb) {
                 han.getRoster(function (err, resp) {
                     if (err) {
                         console.log(err);
@@ -174,6 +180,12 @@ describe('stanza.io messaging workflow', function () {
             function (cb) {
                 han.acceptSubscription(users.Chewie.jid);
                 cb();
+            },
+
+            function (cb) {
+                setTimeout(function () {
+                    cb();
+                }, 100);
             },
 
             function (cb) {
@@ -242,6 +254,12 @@ describe('stanza.io messaging workflow', function () {
             function (cb) {
                 chewie.unsubscribe(users.Han_Solo.jid);
                 cb();
+            },
+
+            function (cb) {
+                setTimeout(function () {
+                    cb();
+                }, 100);
             },
 
             function (cb) {
