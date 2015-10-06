@@ -94,15 +94,14 @@ describe('stanza.io offline message delivery test', function () {
                 cb();
             },
 
-            function (cb) {
-                han.disconnect();
-                cb();
-            },
-
             function () {
                 done();
             }
 
         ]);
+    });
+
+    after(function() {
+        han.disconnect();
     });
 });
