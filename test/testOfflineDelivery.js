@@ -29,7 +29,7 @@ var users = {
 
 describe('stanza.io offline message delivery test', function () {
 
-    var han, chewie;
+    var han;
 
     it('A client should connect and send a message to an offline client', function (done) {
         this.timeout(10000);
