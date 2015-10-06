@@ -20,13 +20,13 @@ module.exports = function log() {
 };
 
 module.exports.createLogger = function (name, opts) {
-    return function (msg) {
+    return function (evt, msg) {
 
         console.log(
             colors.inverse(
-                colors[opts.keysColor](name)));
+                colors[opts.keysColor](name + "#" + evt)));
     
-        for (var i = 0; i < arguments.length; i++)
+        for (var i = 1; i < arguments.length; i++)
             console.log(prettyjson.render(arguments[i], opts));
 
         console.log();
