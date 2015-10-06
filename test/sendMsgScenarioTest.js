@@ -13,6 +13,8 @@ var users = {
         jid:      'han.solo@rebels',
         password: 'pass123',
         host:     'localhost',
+        log:      log.createLogger('han.solo', { keysColor: 'cyan' }),
+
         debugOptions: {
             keysColor: 'cyan'
         }
@@ -21,6 +23,8 @@ var users = {
         jid:      'chewbacca@rebels',
         password: 'pass123',
         host:     'localhost',
+        log:      log.createLogger('chewbacca', { keysColor: 'yellow' }),
+
         debugOptions: {
             keysColor: 'yellow'
         }
@@ -67,7 +71,8 @@ describe('stanza.io messaging workflow', function () {
             },
 
             function (cb) {
-                chewie.once('session:started', function () {
+                chewie.once('session:started', function (data) {
+                    users.Chewie.log(data);
                     cb();
                 });
 
