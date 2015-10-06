@@ -26,3 +26,20 @@ var users = {
         }
     }
 };
+
+describe('stanza.io offline message receive test', function () {
+
+    var han;
+
+    it('A client should connect and receive offline message(s)', function (done) {
+        this.timeout(10000);
+
+        async.series([
+
+            function () {
+                done();
+            }
+
+        ]);
+    });
+});
