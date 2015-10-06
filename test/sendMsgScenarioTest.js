@@ -10,7 +10,7 @@ var debug = false;
 
 var users = {
     'Han_Solo': {
-        jid:      'han.solo@localhost',
+        jid:      'han.solo@rebels',
         password: 'pass123',
         host:     'localhost',
         debugOptions: {
@@ -18,7 +18,7 @@ var users = {
         }
     },
     'Chewie': {
-        jid:      'chewbacca@localhost',
+        jid:      'chewbacca@rebels',
         password: 'pass123',
         host:     'localhost',
         debugOptions: {
@@ -32,7 +32,7 @@ describe('stanza.io messaging workflow', function () {
     var han, chewie;
 
     it('Clients should connect and send messages to each other', function (done) {
-        this.timeout(20000);
+        this.timeout(5000);
 
         async.series([
 
@@ -58,11 +58,9 @@ describe('stanza.io messaging workflow', function () {
                 if (debug === true) {
                     chewie.on('*', function (name, data) {
                         log(users.Chewie.debugOptions, name, data);
-                        //log(users.Chewie.debugOptions, data);
                     });
                     han.on('*', function (name, data) {
                         log(users.Han_Solo.debugOptions, name, data);
-                        //log(users.Han_Solo.debugOptions, data);
                     });
                 }
                 cb();
@@ -91,9 +89,7 @@ describe('stanza.io messaging workflow', function () {
             },
 
             function (cb) {
-                chewie.sendPresence({
-                    
-                });
+                chewie.sendPresence({});
                 cb();
             },
 
@@ -120,9 +116,7 @@ describe('stanza.io messaging workflow', function () {
             },
 
             function (cb) {
-                han.sendPresence({
-                    
-                });
+                han.sendPresence({});
                 cb();
             },
 
