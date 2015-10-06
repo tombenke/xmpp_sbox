@@ -52,8 +52,17 @@ describe('stanza.io offline message receive test', function () {
                     chewie.on('*', function (name, data) {
                         log(users.Chewie.debugOptions, name, data);
                     });
+                }
+                cb();
+            },
 
-                    }
+            function (cb) {
+                chewie.on('message', function (msg) {
+                    should(msg).have.property('to');
+                    msg.to.full.should.equal(users.Chewie.jid);
+                    should(msg).have.property('body', 'Chewie, are you there?');
+                    log(users.Han_Solo.debugOptions, msg);
+                });
                 cb();
             },
 
