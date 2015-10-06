@@ -87,6 +87,14 @@ describe('stanza.io offline message delivery test', function () {
             },
 
             function (cb) {
+                han.sendMessage({
+                    to: users.Chewie.jid,
+                    body: 'Chewie, are you there?'
+                });
+                cb();
+            },
+
+            function (cb) {
                 han.disconnect();
                 cb();
             },
