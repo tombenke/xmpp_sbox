@@ -95,74 +95,7 @@ describe('stanza.io messaging workflow', function () {
                 });
                 han.sendPresence({});
             },
-
-            function (cb) {
-                han.once('subscribe', function (data) {
-                    users.han.log('subscribe', data);
-                    cb();
-                })
-                chewie.subscribe(users.han.jid);
-            },
-
-            function (cb) {
-                chewie.once('subscribe', function (data) {
-                    users.chewie.log('subscribe', data);
-                    cb();
-                })
-                han.subscribe(users.chewie.jid);
-            },
-
-            function (cb) {
-                chewie.once('subscribed', function (data) {
-                    users.chewie.log('subscribed', data);
-                    cb();
-                });
-                han.acceptSubscription(users.chewie.jid);
-            },
-
-            function (cb) {
-                han.once('subscribed', function (data) {
-                    users.han.log('subscribed', data);
-                    cb();
-                });
-                chewie.acceptSubscription(users.han.jid);
-            },
-
-            function (cb) {
-                han.getRoster(function (err, resp) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        users.han.log('roster', resp);
-
-                        resp.should.have.property('roster');
-                        resp.roster.should.have.property('items')
-                        resp.roster.items[0].jid.full.should.equal(users.chewie.jid);
-                        resp.roster.items[0].subscription.should.be.equal('both');
-
-                        cb();
-                    }
-
-                });
-            },
-
-            function (cb) {
-                chewie.getRoster(function (err, resp) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        users.chewie.log('roster', resp);
-
-                        resp.should.have.property('roster');
-                        resp.roster.should.have.property('items')
-                        resp.roster.items[0].jid.full.should.equal(users.han.jid);
-                        resp.roster.items[0].subscription.should.be.equal('both');
-
-                        cb();
-                    }
-                });
-            },
-
+            
             function (cb) {
                 chewie.once('message', function (msg) {
                     users.chewie.log('message', msg);
@@ -195,56 +128,6 @@ describe('stanza.io messaging workflow', function () {
                 });
             },
 
-            function (cb) {
-                chewie.once('unsubscribe', function (data) {
-                    users.chewie.log('unsubscribe', data);
-                    cb();
-                })
-                han.unsubscribe(users.chewie.jid);
-            },
-
-            function (cb) {
-                han.once('unsubscribe', function (data) {
-                    users.han.log('unsubscribe', data);
-                    cb();
-                })
-                chewie.unsubscribe(users.han.jid);
-            },
-
-            function (cb) {
-                chewie.getRoster(function (err, resp) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        users.chewie.log('roster', resp);
-
-                        resp.should.have.property('roster');
-                        resp.roster.should.have.property('items');
-                        resp.roster.items[0].jid.full.should.be.equal(users.han.jid);
-                        resp.roster.items[0].subscription.should.be.equal('none');
-
-                        cb();
-                    }
-                });
-            },
-
-            function (cb) {
-                han.getRoster(function (err, resp) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        users.han.log('roster', resp);
-
-                        resp.should.have.property('roster');
-                        resp.roster.should.have.property('items');
-                        resp.roster.items[0].jid.full.should.be.equal(users.chewie.jid);
-                        resp.roster.items[0].subscription.should.be.equal('none');
-
-                        cb();
-                    }
-                });
-            },
-
             function () {
                 done();
             }
@@ -252,10 +135,6 @@ describe('stanza.io messaging workflow', function () {
     });
 
     after(function() {
-        chewie.removeRosterItem(users.han.jid, function () {
-        });
-        han.removeRosterItem(users.chewie.jid, function () {
-        });
         chewie.disconnect();
         han.disconnect();
     });
