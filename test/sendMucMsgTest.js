@@ -28,3 +28,114 @@ var users = {
         log:      logger.createLogger('r2d2', { keysColor: 'green' })
     }
 };
+
+describe('stanza.io messaging workflow', function () {
+
+    var han, chewie, r2d2;
+
+    it('Clients should connect and send messages to each other', function (done) {
+        this.timeout(10000);
+
+        async.series([
+
+            function (cb) {
+                chewie = XMPP.createClient({
+                    jid:       users.chewie.jid,
+                    password:  users.chewie.password,
+                    wsURL:     'ws://localhost:5280/websocket',
+                    transport: 'websocket'
+                });
+
+                han = XMPP.createClient({
+                    jid:        users.han.jid,
+                    password:   users.han.password,
+                    wsURL:     'ws://localhost:5280/websocket',
+                    transport: 'websocket'
+                });
+
+                r2d2 = XMPP.createClient({
+                    jid:        users.r2d2.jid,
+                    password:   users.r2d2.password,
+                    wsURL:     'ws://localhost:5280/websocket',
+                    transport: 'websocket'
+                });
+              
+                cb();
+            },
+
+            function (cb) {
+                if (debug === true) {
+                    chewie.on('*', function (name, data) {
+                        console.dir(data);
+                    });
+                    han.on('*', function (name, data) {
+                        console.dir(data);
+                    });
+                    r2d2.on('*', function (name, data) {
+                        console.dir(data);
+                    });
+                }
+                cb();
+            },
+
+            function (cb) {
+                chewie.once('session:started', function (data) {
+                    users.chewie.log('session:started', data);
+                    cb();
+                });
+                chewie.connect();
+            },
+
+            function (cb) {
+                chewie.once('presence', function (data) {
+                    users.chewie.log('presence', data);
+                    cb();
+                });
+                chewie.sendPresence({});
+            },
+
+            function (cb) {
+                han.once('session:started', function (data) {
+                    users.han.log('session:started', data);
+                    cb();
+                });
+                han.connect();
+            },
+
+            function (cb) {
+                han.once('presence', function (data) {
+                    users.han.log('presence', data);
+                    cb();
+                });
+                han.sendPresence({});
+            },
+
+            function (cb) {
+                r2d2.once('session:started', function (data) {
+                    users.r2d2.log('session:started', data);
+                    cb();
+                });
+                r2d2.connect();
+            },
+
+            function (cb) {
+                r2d2.once('presence', function (data) {
+                    users.r2d2.log('presence', data);
+                    cb();
+                });
+                r2d2.sendPresence({});
+            },
+
+            function () {
+                done();
+            }
+        ]);
+    });
+
+    after(function() {
+        chewie.disconnect();
+        han.disconnect();
+        r2d2.disconnect();
+    });
+    
+});
