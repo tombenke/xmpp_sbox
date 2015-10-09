@@ -146,7 +146,7 @@ describe('stanza.io offline message delivery test', function () {
                         should(resp).have.property('roster');
                         should(resp).have.property('from')
                         resp.from.full.should.equal(users.chewie.jid);
-                        users.chewie.log('presence', resp);
+                        users.chewie.log('roster', resp);
                     }
                     cb();
                 });
