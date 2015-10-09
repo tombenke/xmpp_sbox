@@ -66,8 +66,8 @@ describe('stanza.io offline message delivery test', function () {
                     if (err) {
                         console.log(err);
                     } else {
-                        should(resp).have.property('roster');
-                        should(resp).have.property('from')
+                        resp.should.have.property('roster');
+                        resp.should.have.property('from')
                         resp.from.full.should.equal(users.han.jid);
                         users.han.log('roster', resp);
                     }
@@ -120,10 +120,10 @@ describe('stanza.io offline message delivery test', function () {
 
             function (cb) {
                 chewie.once('message', function (msg) {
-                    should(msg).have.property('to');
+                    msg.should.have.property('to');
                     msg.to.full.should.equal(users.chewie.jid);
-                    should(msg).have.property('body', 'Chewie, are you there?');
-                    should(msg).have.property('delay');
+                    msg.should.have.property('body', 'Chewie, are you there?');
+                    msg.should.have.property('delay');
                     users.chewie.log('message', msg);
                 });
                 cb();
@@ -143,8 +143,8 @@ describe('stanza.io offline message delivery test', function () {
                     if (err) {
                         console.log(err);
                     } else {
-                        should(resp).have.property('roster');
-                        should(resp).have.property('from')
+                        resp.should.have.property('roster');
+                        resp.should.have.property('from')
                         resp.from.full.should.equal(users.chewie.jid);
                         users.chewie.log('roster', resp);
                     }
