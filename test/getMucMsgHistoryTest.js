@@ -5,7 +5,6 @@ var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
 var logger = require('../libs/log');
-var util = require('util');
 
 var debug = false;
 
