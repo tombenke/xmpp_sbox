@@ -147,10 +147,48 @@ describe('stanza.io messaging workflow', function () {
             function (cb) {
                 r2d2.once('muc:join', function (data) {
                     users.r2d2.log('muc:join');
+
                     console.log(data);
                     cb();
                 });
                 r2d2.joinRoom('conference@conference.rebels', 'R2');
+            },
+
+            function (cb) {
+                async.parallel([
+                    function(callback){
+                        han.once('message', function (msg) {
+                            users.han.log('message', msg);
+                            callback();
+                        });
+                    },
+                    function(callback){
+                        chewie.once('message', function (msg) {
+                            users.chewie.log('message', msg);
+                            callback();
+                        });
+                    },
+                    function(callback){
+                        r2d2.once('message', function (msg) {
+                            users.r2d2.log('message', msg);
+                            callback();
+                        });
+                    }
+                ],
+                
+                function(err, results){
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        cb();
+                    }
+                });
+
+                han.sendMessage({
+                    to: 'conference@conference.rebels',
+                    body: 'Anybody there?',
+                    type: 'groupchat'
+                });
             },
 
             function (cb) {
