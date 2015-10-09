@@ -126,6 +126,60 @@ describe('stanza.io messaging workflow', function () {
                 r2d2.sendPresence({});
             },
 
+            function (cb) {
+                han.once('muc:join', function (data) {
+                    users.han.log('muc:join');
+                    console.log(data);
+                    cb();
+                });
+                han.joinRoom('conference@conference.rebels', 'Han');
+            },
+
+            function (cb) {
+                chewie.once('muc:join', function (data) {
+                    users.chewie.log('muc:join');
+                    console.log(data);
+                    cb();
+                });
+                chewie.joinRoom('conference@conference.rebels', 'Chewie');
+            },
+
+            function (cb) {
+                r2d2.once('muc:join', function (data) {
+                    users.r2d2.log('muc:join');
+                    console.log(data);
+                    cb();
+                });
+                r2d2.joinRoom('conference@conference.rebels', 'R2');
+            },
+
+            function (cb) {
+                han.once('muc:leave', function (data) {
+                    users.han.log('muc:leave');
+                    console.log(data);
+                    cb();
+                });
+                han.leaveRoom('conference@conference.rebels', 'Han');
+            },
+
+            function (cb) {
+                chewie.once('muc:leave', function (data) {
+                    users.chewie.log('muc:leave');
+                    console.log(data);
+                    cb();
+                });
+                chewie.leaveRoom('conference@conference.rebels', 'Chewie');
+            },
+
+            function (cb) {
+                r2d2.once('muc:leave', function (data) {
+                    users.r2d2.log('muc:leave');
+                    console.log(data);
+                    cb();
+                });
+                r2d2.leaveRoom('conference@conference.rebels', 'R2');
+            },
+
             function () {
                 done();
             }
