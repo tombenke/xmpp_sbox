@@ -4,26 +4,22 @@
 var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
-var log = require('../libs/log');
+var logger = require('../libs/log');
 
 var debug = false;
 
 var users = {
-    'Han_Solo': {
-        jid:      'han.solo@localhost',
+    han: {
+        jid:      'han.solo@rebels',
         password: 'pass123',
         host:     'localhost',
-        debugOptions: {
-            keysColor: 'cyan'
-        }
+        log:      logger.createLogger('han.solo', { keysColor: 'cyan' })
     },
-    'Chewie': {
-        jid:      'chewbacca@localhost',
+    chewie: {
+        jid:      'chewbacca@rebels',
         password: 'pass123',
         host:     'localhost',
-        debugOptions: {
-            keysColor: 'yellow'
-        }
+        log:      logger.createLogger('chewbacca', { keysColor: 'yellow' })
     }
 };
 
@@ -38,8 +34,8 @@ describe('stanza.io offline message delivery test', function () {
 
             function (cb) {
                 han = XMPP.createClient({
-                    jid: users.Han_Solo.jid,
-                    password: users.Han_Solo.password,
+                    jid: users.han.jid,
+                    password: users.han.password,
                     wsURL: 'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
@@ -50,15 +46,15 @@ describe('stanza.io offline message delivery test', function () {
             function (cb) {
                 if (debug === true) {
                     han.on('*', function (name, data) {
-                        log(users.Han_Solo.debugOptions, name, data);
+                        console.dir(data);
                     });
-
-                    }
+                }
                 cb();
             },
 
             function (cb) {
-                han.once('session:started', function () {
+                han.once('session:started', function (data) {
+                    users.han.log('session:started', data);
                     cb();
                 });
 
@@ -72,23 +68,24 @@ describe('stanza.io offline message delivery test', function () {
                     } else {
                         should(resp).have.property('roster');
                         should(resp).have.property('from')
-                        resp.from.full.should.equal(users.Han_Solo.jid);
-                        log(users.Han_Solo.debugOptions, resp);
+                        resp.from.full.should.equal(users.han.jid);
+                        users.han.log('roster', resp);
                     }
                     cb();
                 });
             },
 
             function (cb) {
-                han.sendPresence({
-                    
+                han.once('presence', function (data) {
+                    users.han.log('presence', data);
+                    cb();
                 });
-                cb();
+                han.sendPresence({});
             },
 
             function (cb) {
                 han.sendMessage({
-                    to: users.Chewie.jid,
+                    to: users.chewie.jid,
                     body: 'Chewie, are you there?'
                 });
                 cb();
@@ -103,8 +100,8 @@ describe('stanza.io offline message delivery test', function () {
 
             function (cb) {
                 chewie = XMPP.createClient({
-                    jid: users.Chewie.jid,
-                    password: users.Chewie.password,
+                    jid: users.chewie.jid,
+                    password: users.chewie.password,
                     wsURL: 'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
@@ -115,25 +112,26 @@ describe('stanza.io offline message delivery test', function () {
             function (cb) {
                 if (debug === true) {
                     chewie.on('*', function (name, data) {
-                        log(users.Chewie.debugOptions, name, data);
+                        console.dir(data);
                     });
                 }
                 cb();
             },
 
             function (cb) {
-                chewie.on('message', function (msg) {
+                chewie.once('message', function (msg) {
                     should(msg).have.property('to');
-                    msg.to.full.should.equal(users.Chewie.jid);
+                    msg.to.full.should.equal(users.chewie.jid);
                     should(msg).have.property('body', 'Chewie, are you there?');
                     should(msg).have.property('delay');
-                    log(users.Han_Solo.debugOptions, msg);
+                    users.chewie.log('message', msg);
                 });
                 cb();
             },
 
             function (cb) {
-                chewie.once('session:started', function () {
+                chewie.once('session:started', function (data) {
+                    users.chewie.log('session:started', data);
                     cb();
                 });
 
@@ -147,18 +145,19 @@ describe('stanza.io offline message delivery test', function () {
                     } else {
                         should(resp).have.property('roster');
                         should(resp).have.property('from')
-                        resp.from.full.should.equal(users.Chewie.jid);
-                        log(users.Chewie.debugOptions, resp);
+                        resp.from.full.should.equal(users.chewie.jid);
+                        users.chewie.log('presence', resp);
                     }
                     cb();
                 });
             },
 
             function (cb) {
-                chewie.sendPresence({
-                    
+                chewie.once('presence', function (data) {
+                    users.chewie.log('presence', data);
+                    cb();
                 });
-                cb();
+                chewie.sendPresence({});
             },
 
             function () {
