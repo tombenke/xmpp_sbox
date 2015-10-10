@@ -39,7 +39,7 @@ describe('stanza.io messaging workflow', function () {
 
     var han, chewie, r2d2, leia;
 
-    it('Clients should connect and send messages to each other', function (done) {
+    it('Client Leia should receive sent messages after join', function (done) {
         this.timeout(10000);
 
         async.series([
