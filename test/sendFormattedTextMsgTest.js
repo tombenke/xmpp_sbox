@@ -27,7 +27,7 @@ describe('stanza.io messaging workflow', function () {
 
     var han, chewie;
 
-    it('Clients should connect and send messages to each other', function (done) {
+    it('Clients should connect and send formatted text messages to each other', function (done) {
         this.timeout(3000);
 
         async.series([
