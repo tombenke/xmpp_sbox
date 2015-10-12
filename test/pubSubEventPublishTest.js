@@ -243,7 +243,7 @@ describe('stanza.io PubSub workflow', function () {
             	han.once('unsubscribed', function (msg) {
                     users.han.log('unsubscribe', msg);
                 });
-                han.unsubscribeFromNode('pubsub.rebels', {node:'missionbriefing', jid:hanFullJid}, function (err, resp) {
+                han.unsubscribeFromNode('pubsub.rebels', {node:'missionbriefing', jid:han.jid.full}, function (err, resp) {
                     if (err) {
                 		users.han.log('unsubscribe:error', err);
                 		cb();
@@ -258,7 +258,7 @@ describe('stanza.io PubSub workflow', function () {
             	chewie.once('unsubscribed', function (msg) {
                     users.chewie.log('unsubscribe', msg);
                 });
-                chewie.unsubscribeFromNode('pubsub.rebels', {node:'missionbriefing', jid:chewieFullJid}, function (err, resp) {
+                chewie.unsubscribeFromNode('pubsub.rebels', {node:'missionbriefing', jid:chewie.jid.full}, function (err, resp) {
                     if (err) {
                 		users.chewie.log('unsubscribe:error', err);
                 		cb();
