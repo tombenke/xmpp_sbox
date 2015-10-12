@@ -142,7 +142,7 @@ describe('stanza.io PubSub workflow', function () {
                 });
             },
 
-            function (cb) {
+            /*function (cb) {
             	var item = {
 			    	json: {
 			        	value: 'Mission info'
@@ -157,7 +157,7 @@ describe('stanza.io PubSub workflow', function () {
                 		cb();
                 	}
             	});
-            },
+            },*/
 
             function (cb) {
                 han.getDiscoItems('pubsub.rebels', '', function (err, items) {
