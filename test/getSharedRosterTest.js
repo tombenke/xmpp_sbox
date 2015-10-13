@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 'use strict';
 
+/*	Important Note: Create a shared roster group in web admin (add members, etc.),
+	and ADD the group name to the 'Displayed Group:' field of the group to
+	make visible to group members on their individual roster.	*/
+
 var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
