@@ -142,23 +142,6 @@ describe('stanza.io PubSub workflow', function () {
                 });
             },
 
-            /*function (cb) {
-            	var item = {
-			    	json: {
-			        	value: 'Mission info'
-			        }
-			    };
-            	admin.publish('pubsub.rebels', 'missionbriefing', item, function (err, resp) {
-            		if (err) {
-                		users.admin.log('publish', err);
-                		cb();
-                	} else {
-                		users.admin.log('publish', resp);
-                		cb();
-                	}
-            	});
-            },*/
-
             function (cb) {
                 han.getDiscoItems('pubsub.rebels', '', function (err, items) {
                     users.han.log('disco', items);
@@ -227,7 +210,9 @@ describe('stanza.io PubSub workflow', function () {
 
                 var item = {
 			    	json: {
-			        	value: 'Mission info'
+			        	value: 'Mission info',
+                        value2: 'Mission start',
+                        value3: 'Mission crew'
 			        }
 			    };
             	admin.publish('pubsub.rebels', 'missionbriefing', item, function (err, resp) {
