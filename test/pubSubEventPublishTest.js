@@ -130,13 +130,11 @@ describe('stanza.io PubSub workflow', function () {
 
             function (cb) {
                 admin.createNode('pubsub.rebels', 'missionbriefing', '', function (err, resp) {
-                	if (err) {
-                		users.admin.log('create:node', err);
-                    	cb();
-                	} else {
-                		users.admin.log('create:node', resp);
-                    	cb();
-                	}
+                    users.admin.log('create:node', resp);
+
+                    resp.pubsub.should.have.property('create', 'missionbriefing');
+                    
+                    cb();
                 });
             },
 
@@ -150,6 +148,10 @@ describe('stanza.io PubSub workflow', function () {
             function (cb) {
                 han.subscribeToNode('pubsub.rebels', 'missionbriefing', function (err, resp) {
                     users.han.log('subscribe', resp);
+
+                    resp.pubsub.subscription.should.have.property('node', 'missionbriefing');
+                    resp.pubsub.subscription.should.have.property('subid');
+
                     cb();
                 });
             },
@@ -157,6 +159,9 @@ describe('stanza.io PubSub workflow', function () {
             function (cb) {
                 han.getSubscriptions('pubsub.rebels', '', function (err, subscriptions) {
                     users.han.log('get:subscriptions', subscriptions);
+
+                    subscriptions.pubsub.subscriptions.list[0].should.have.property('node', 'missionbriefing');
+
                     cb();
                 });
             },
@@ -171,6 +176,10 @@ describe('stanza.io PubSub workflow', function () {
             function (cb) {
                 chewie.subscribeToNode('pubsub.rebels', 'missionbriefing', function (err, resp) {
                     users.chewie.log('subscribe', resp);
+
+                    resp.pubsub.subscription.should.have.property('node', 'missionbriefing');
+                    resp.pubsub.subscription.should.have.property('subid');
+
                     cb();
                 });
             },
@@ -178,6 +187,9 @@ describe('stanza.io PubSub workflow', function () {
             function (cb) {
                 chewie.getSubscriptions('pubsub.rebels', '', function (err, subscriptions) {
                     users.chewie.log('get:subscriptions', subscriptions);
+
+                    subscriptions.pubsub.subscriptions.list[0].should.have.property('node', 'missionbriefing');
+
                     cb();
                 });
             },
@@ -187,12 +199,24 @@ describe('stanza.io PubSub workflow', function () {
                     function(callback) {
                         han.once('pubsub:event', function (msg) {
 		                    users.han.log('pubsub:event', msg);
+
+                            msg.event.updated.should.have.property('node', 'missionbriefing');
+                            msg.event.updated.published[0].json.should.have.property('value', 'Mission info');
+                            msg.event.updated.published[0].json.should.have.property('value2', 'Mission start');
+                            msg.event.updated.published[0].json.should.have.property('value3', 'Mission crew');
+
 		                    callback();
 		                });
                     },
                     function(callback) {
                         chewie.once('pubsub:event', function (msg) {
 		                    users.chewie.log('pubsub:event', msg);
+
+                            msg.event.updated.should.have.property('node', 'missionbriefing');
+                            msg.event.updated.published[0].json.should.have.property('value', 'Mission info');
+                            msg.event.updated.published[0].json.should.have.property('value2', 'Mission start');
+                            msg.event.updated.published[0].json.should.have.property('value3', 'Mission crew');
+
 		                    callback();
 		                });
                     }
@@ -214,11 +238,11 @@ describe('stanza.io PubSub workflow', function () {
 			        }
 			    };
             	admin.publish('pubsub.rebels', 'missionbriefing', item, function (err, resp) {
-            		if (err) {
-                		users.admin.log('publish', err);
-                	} else {
-                		users.admin.log('publish', resp);
-                	}
+            		users.admin.log('publish', resp);
+
+                    resp.pubsub.publish.should.have.property('node', 'missionbriefing');
+                    resp.pubsub.publish.items[0].should.have.property('id');
+
             	});
             },
 
@@ -227,13 +251,14 @@ describe('stanza.io PubSub workflow', function () {
                     users.han.log('unsubscribe', msg);
                 });
                 han.unsubscribeFromNode('pubsub.rebels', {node: 'missionbriefing', jid: han.jid.full}, function (err, resp) {
-                    if (err) {
-                		users.han.log('unsubscribe:error', err);
-                		cb();
-                	} else {
-                		users.han.log('unsubscribe', resp);
-                		cb();
-                	}
+            		users.han.log('unsubscribe', resp);
+
+                    resp.should.have.property('from');
+                    resp.from.should.have.property('full', 'pubsub.rebels');
+                    resp.should.have.property('to');
+                    resp.to.should.have.property('full', han.jid.full);
+
+            		cb();
                 });
             },
 
@@ -242,13 +267,14 @@ describe('stanza.io PubSub workflow', function () {
                     users.chewie.log('unsubscribe', msg);
                 });
                 chewie.unsubscribeFromNode('pubsub.rebels', {node: 'missionbriefing', jid: chewie.jid.full}, function (err, resp) {
-                    if (err) {
-                		users.chewie.log('unsubscribe:error', err);
-                		cb();
-                	} else {
-                		users.chewie.log('unsubscribe', resp);
-                		cb();
-                	}
+                    users.chewie.log('unsubscribe', resp);
+
+                    resp.should.have.property('from');
+                    resp.from.should.have.property('full', 'pubsub.rebels');
+                    resp.should.have.property('to');
+                    resp.to.should.have.property('full', chewie.jid.full);
+
+                    cb();
                 });
             },
 
