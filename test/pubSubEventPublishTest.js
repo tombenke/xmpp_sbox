@@ -107,7 +107,6 @@ describe('stanza.io PubSub workflow', function () {
             function (cb) {
                 chewie.once('presence', function (data) {
                     users.chewie.log('presence', data);
-                    chewieFullJid = data.to.full;
                     cb();
                 });
                 chewie.sendPresence({});
@@ -124,7 +123,6 @@ describe('stanza.io PubSub workflow', function () {
             function (cb) {
                 han.once('presence', function (data) {
                     users.han.log('presence', data);
-                    hanFullJid = data.to.full;
                     cb();
                 });
                 han.sendPresence({});
@@ -228,7 +226,7 @@ describe('stanza.io PubSub workflow', function () {
             	han.once('unsubscribed', function (msg) {
                     users.han.log('unsubscribe', msg);
                 });
-                han.unsubscribeFromNode('pubsub.rebels', {node:'missionbriefing', jid:han.jid.full}, function (err, resp) {
+                han.unsubscribeFromNode('pubsub.rebels', {node: 'missionbriefing', jid: han.jid.full}, function (err, resp) {
                     if (err) {
                 		users.han.log('unsubscribe:error', err);
                 		cb();
@@ -243,7 +241,7 @@ describe('stanza.io PubSub workflow', function () {
             	chewie.once('unsubscribed', function (msg) {
                     users.chewie.log('unsubscribe', msg);
                 });
-                chewie.unsubscribeFromNode('pubsub.rebels', {node:'missionbriefing', jid:chewie.jid.full}, function (err, resp) {
+                chewie.unsubscribeFromNode('pubsub.rebels', {node: 'missionbriefing', jid: chewie.jid.full}, function (err, resp) {
                     if (err) {
                 		users.chewie.log('unsubscribe:error', err);
                 		cb();
@@ -261,9 +259,7 @@ describe('stanza.io PubSub workflow', function () {
     });
 
     after(function() {
-    	admin.deleteNode('pubsub.rebels', 'missionbriefing', function (err, resp) {
-	        //users.admin.log('delete:node', resp);
-        });
+    	admin.deleteNode('pubsub.rebels', 'missionbriefing', function (err, resp) {});
         chewie.disconnect();
         han.disconnect();
         admin.disconnect();
