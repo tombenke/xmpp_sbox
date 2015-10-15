@@ -52,11 +52,11 @@ module.exports.empire = function() {
             host:       'localhost',
             log:        logger.createLogger('darth.vader', { keysColor: 'cyan' }),
         },
-        emperor: {
-            jid:        'emperor@empire',
+        sidious: {
+            jid:        'darth.sidious@empire',
             password:   'pass123',
             host:       'localhost',
-            log:        logger.createLogger('emperor', { keysColor: 'yellow' }),
+            log:        logger.createLogger('sidious', { keysColor: 'yellow' }),
         },
         tarkin: {
             jid:        'wilhuf.tarkin@empire',
