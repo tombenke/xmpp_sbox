@@ -9,7 +9,8 @@
   "author": "tombenke",
   "license": "MIT",
   "dependencies": {
-    "stanza.io": "^7.3.4"
+    "stanza.io": "^7.3.4",
+    "yamljs": "~0.2.4"
   },
   "devDependencies": {
     "async": "~1.4.2",

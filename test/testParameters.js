@@ -68,7 +68,7 @@ module.exports.empire = function() {
             jid:        'thrawn@empire',
             password:   'pass123',
             host:       'localhost',
-            log:        logger.createLogger('tarkin', { keysColor: 'green' })
+            log:        logger.createLogger('thrawn', { keysColor: 'magenta' })
         }
     };
 };

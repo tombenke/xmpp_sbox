@@ -1,5 +1,6 @@
 var prettyjson = require('prettyjson');
 var colors = require('colors/safe');
+var YAML = require('yamljs');
 
 
 module.exports = function log() {
@@ -26,10 +27,12 @@ module.exports.createLogger = function (name, opts) {
             colors.inverse(
                 colors[opts.keysColor](name + "#" + evt)));
     
-        for (var i = 1; i < arguments.length; i++)
-            console.log(prettyjson.render(arguments[i], opts));
-
-        console.log();
-
+        for (var i = 1; i < arguments.length; i++) {
+            console.log(
+                colors[opts.keysColor](
+                    YAML.stringify(
+                        JSON.parse(
+                            JSON.stringify(arguments[i])), 100, 2)));
+        }
     }
 }
