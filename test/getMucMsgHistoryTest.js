@@ -5,36 +5,10 @@ var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
 var logger = require('../libs/log');
+var rebels = require('./testParameters').rebels;
 
 var debug = false;
 
-var users = {
-    han: {
-        jid:      'han.solo@rebels',
-        password: 'pass123',
-        host:     'localhost',
-        log:      logger.createLogger('han.solo', { keysColor: 'cyan' })
-    },
-    chewie: {
-        jid:      'chewbacca@rebels',
-        password: 'pass123',
-        host:     'localhost',
-        log:      logger.createLogger('chewbacca', { keysColor: 'yellow' })
-    },
-    r2d2: {
-        jid:      'r2d2@rebels',
-        password: 'pass123',
-        host:     'localhost',
-        log:      logger.createLogger('r2d2', { keysColor: 'green' })
-    },
-    leia: {
-        jid:      'leia.organa@rebels',
-        password: 'pass123',
-        host:     'localhost',
-        log:      logger.createLogger('leia', { keysColor: 'magenta' })
-    }
-};
-  
 describe('stanza.io messaging workflow', function () {
 
     var han, chewie, r2d2, leia;
@@ -46,29 +20,29 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie = XMPP.createClient({
-                    jid:       users.chewie.jid,
-                    password:  users.chewie.password,
+                    jid:       rebels().chewie.jid,
+                    password:  rebels().chewie.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
 
                 han = XMPP.createClient({
-                    jid:        users.han.jid,
-                    password:   users.han.password,
+                    jid:        rebels().han.jid,
+                    password:   rebels().han.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
 
                 r2d2 = XMPP.createClient({
-                    jid:        users.r2d2.jid,
-                    password:   users.r2d2.password,
+                    jid:        rebels().r2d2.jid,
+                    password:   rebels().r2d2.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
 
                 leia = XMPP.createClient({
-                    jid:        users.leia.jid,
-                    password:   users.leia.password,
+                    jid:        rebels().leia.jid,
+                    password:   rebels().leia.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
@@ -96,7 +70,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.once('session:started', function (data) {
-                    users.chewie.log('session:started', data);
+                    rebels().chewie.log('session:started', data);
                     cb();
                 });
                 chewie.connect();
@@ -104,7 +78,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.once('presence', function (data) {
-                    users.chewie.log('presence', data);
+                    rebels().chewie.log('presence', data);
                     cb();
                 });
                 chewie.sendPresence({});
@@ -112,7 +86,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.once('session:started', function (data) {
-                    users.han.log('session:started', data);
+                    rebels().han.log('session:started', data);
                     cb();
                 });
                 han.connect();
@@ -120,7 +94,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.once('presence', function (data) {
-                    users.han.log('presence', data);
+                    rebels().han.log('presence', data);
                     cb();
                 });
                 han.sendPresence({});
@@ -128,7 +102,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 r2d2.once('session:started', function (data) {
-                    users.r2d2.log('session:started', data);
+                    rebels().r2d2.log('session:started', data);
                     cb();
                 });
                 r2d2.connect();
@@ -136,7 +110,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 r2d2.once('presence', function (data) {
-                    users.r2d2.log('presence', data);
+                    rebels().r2d2.log('presence', data);
                     cb();
                 });
                 r2d2.sendPresence({});
@@ -144,7 +118,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 leia.once('session:started', function (data) {
-                    users.leia.log('session:started', data);
+                    rebels().leia.log('session:started', data);
                     cb();
                 });
                 leia.connect();
@@ -152,7 +126,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 leia.once('presence', function (data) {
-                    users.leia.log('presence', data);
+                    rebels().leia.log('presence', data);
                     cb();
                 });
                 leia.sendPresence({});
@@ -160,8 +134,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.once('muc:join', function (data) {
-                    users.chewie.log('muc:join');
-                    console.log(data);
+                    rebels().chewie.log('muc:join', data);
                     cb();
                 });
             	chewie.joinRoom('example@conference.rebels', 'Chewie');
@@ -169,8 +142,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.once('muc:join', function (data) {
-                    users.han.log('muc:join');
-                    console.log(data);
+                    rebels().han.log('muc:join', data);
                     cb();
                 });
                 han.joinRoom('example@conference.rebels', 'Han');
@@ -178,8 +150,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 r2d2.once('muc:join', function (data) {
-                    users.r2d2.log('muc:join');
-                    console.log(data);
+                    rebels().r2d2.log('muc:join', data);
                     cb();
                 });
                 r2d2.joinRoom('example@conference.rebels', 'R2');
@@ -187,7 +158,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.once('message', function (msg) {
-                    users.chewie.log('message', msg);
+                    rebels().chewie.log('message', msg);
                     cb();
                 });
 
@@ -200,7 +171,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.once('message', function (msg) {
-                    users.han.log('message', msg);
+                    rebels().han.log('message', msg);
                     cb();
                 });
                 chewie.sendMessage({
@@ -212,7 +183,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 r2d2.once('message', function (msg) {
-                    users.r2d2.log('message', msg);
+                    rebels().r2d2.log('message', msg);
                     cb();
                 });
                 r2d2.sendMessage({
@@ -224,8 +195,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.once('muc:leave', function (data) {
-                    users.chewie.log('muc:leave');
-                    console.log(data);
+                    rebels().chewie.log('muc:leave', data);
                     cb();
                 });
             	han.leaveRoom('example@conference.rebels', 'Han');
@@ -233,8 +203,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 r2d2.once('muc:leave', function (data) {
-                    users.r2d2.log('muc:leave');
-                    console.log(data);
+                    rebels().r2d2.log('muc:leave', data);
                     cb();
                 });
                 r2d2.leaveRoom('example@conference.rebels', 'R2');
@@ -242,18 +211,17 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 leia.on('message', function (msg) {
-                    users.leia.log('message', msg);
+                    rebels().leia.log('message', msg);
                     
                     msg.should.have.property('delay');
                     msg.should.have.property('to');
-                    msg.to.bare.should.equal(users.leia.jid);
+                    msg.to.bare.should.equal(rebels().leia.jid);
                     msg.should.have.property('body');
                     
                 });
 
                 leia.once('muc:join', function (data) {
-                    users.leia.log('muc:join');
-                    console.log(data);
+                    rebels().leia.log('muc:join', data);
                     cb();
                 });
 
@@ -262,8 +230,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 leia.once('muc:leave', function (data) {
-                    users.leia.log('muc:leave');
-                    console.log(data);
+                    rebels().leia.log('muc:leave', data);
                     cb();
                 });
 
@@ -272,8 +239,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.once('muc:leave', function (data) {
-                    users.chewie.log('muc:leave');
-                    console.log(data);
+                    rebels().chewie.log('muc:leave', data);
                     cb();
                 });
 
