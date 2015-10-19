@@ -5,33 +5,13 @@ var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
 var logger = require('../libs/log');
+var rebels = require('./testParameters').rebels;
 
 var debug = false;
 
-var users = {
-    admin: {
-        jid:      'rebels.admin@rebels',
-        password: 'pass123',
-        host:     'localhost',
-        log:      logger.createLogger('admin', { keysColor: 'red', style: 'bold' }),
-    },
-    han: {
-        jid:      'han.solo@rebels',
-        password: 'pass123',
-        host:     'localhost',
-        log:      logger.createLogger('han.solo', { keysColor: 'cyan' }),
-    },
-    chewie: {
-        jid:      'chewbacca@rebels',
-        password: 'pass123',
-        host:     'localhost',
-        log:      logger.createLogger('chewbacca', { keysColor: 'yellow' }),
-    },
-};
-
 describe('stanza.io PubSub workflow', function () {
 
-    var admin, han, chewie;
+    var rebelsAdmin, han, chewie;
 
     it('Admin should create a node, publish an item, and others should receive that', function (done) {
         this.timeout(10000);
@@ -39,23 +19,23 @@ describe('stanza.io PubSub workflow', function () {
         async.series([
 
             function (cb) {
-                admin = XMPP.createClient({
-                    jid:       users.admin.jid,
-                    password:  users.admin.password,
+                rebelsAdmin = XMPP.createClient({
+                    jid:       rebels().rebelsAdmin.jid,
+                    password:  rebels().rebelsAdmin.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
 
                 chewie = XMPP.createClient({
-                    jid:       users.chewie.jid,
-                    password:  users.chewie.password,
+                    jid:       rebels().chewie.jid,
+                    password:  rebels().chewie.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
 
                 han = XMPP.createClient({
-                    jid:        users.han.jid,
-                    password:   users.han.password,
+                    jid:        rebels().han.jid,
+                    password:   rebels().han.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
@@ -65,40 +45,40 @@ describe('stanza.io PubSub workflow', function () {
 
             function (cb) {
                 if (debug === true) {
-                    admin.on('*', function (name, data) {
-                    	console.dir(name);
-                    	console.dir(data);
+                    rebelsAdmin.on('*', function (name, data) {
+                        console.dir(name);
+                        console.dir(data);
                     });
                     chewie.on('*', function (name, data) {
-                    	console.dir(name);
-                    	console.dir(data);
+                        console.dir(name);
+                        console.dir(data);
                     });
                     han.on('*', function (name, data) {
-                    	console.dir(name);
-                    	console.dir(data);
+                        console.dir(name);
+                        console.dir(data);
                     });
                 }
                 cb();
             },
             function (cb) {
-                admin.once('session:started', function (data) {
-                    users.admin.log('session:started', data);
+                rebelsAdmin.once('session:started', function (data) {
+                    rebels().rebelsAdmin.log('session:started', data);
                     cb();
                 });
-                admin.connect();
+                rebelsAdmin.connect();
             },
 
             function (cb) {
-                admin.once('presence', function (data) {
-                    users.admin.log('presence', data);
+                rebelsAdmin.once('presence', function (data) {
+                    rebels().rebelsAdmin.log('presence', data);
                     cb();
                 });
-                admin.sendPresence({});
+                rebelsAdmin.sendPresence({});
             },
 
             function (cb) {
                 chewie.once('session:started', function (data) {
-                    users.chewie.log('session:started', data);
+                    rebels().chewie.log('session:started', data);
                     cb();
                 });
                 chewie.connect();
@@ -106,7 +86,7 @@ describe('stanza.io PubSub workflow', function () {
 
             function (cb) {
                 chewie.once('presence', function (data) {
-                    users.chewie.log('presence', data);
+                    rebels().chewie.log('presence', data);
                     cb();
                 });
                 chewie.sendPresence({});
@@ -114,7 +94,7 @@ describe('stanza.io PubSub workflow', function () {
 
             function (cb) {
                 han.once('session:started', function (data) {
-                    users.han.log('session:started', data);
+                    rebels().han.log('session:started', data);
                     cb();
                 });
                 han.connect();
@@ -122,15 +102,15 @@ describe('stanza.io PubSub workflow', function () {
 
             function (cb) {
                 han.once('presence', function (data) {
-                    users.han.log('presence', data);
+                    rebels().han.log('presence', data);
                     cb();
                 });
                 han.sendPresence({});
             },
 
             function (cb) {
-                admin.createNode('pubsub.rebels', 'missionbriefing', '', function (err, resp) {
-                    users.admin.log('create:node', resp);
+                rebelsAdmin.createNode('pubsub.rebels', 'missionbriefing', '', function (err, resp) {
+                    rebels().rebelsAdmin.log('create:node', resp);
 
                     resp.pubsub.should.have.property('create', 'missionbriefing');
                     
@@ -140,14 +120,14 @@ describe('stanza.io PubSub workflow', function () {
 
             function (cb) {
                 han.getDiscoItems('pubsub.rebels', '', function (err, items) {
-                    users.han.log('disco', items);
+                    rebels().han.log('disco', items);
                     cb();
                 });
             },
 
             function (cb) {
                 han.subscribeToNode('pubsub.rebels', 'missionbriefing', function (err, resp) {
-                    users.han.log('subscribe', resp);
+                    rebels().han.log('subscribe', resp);
 
                     resp.pubsub.subscription.should.have.property('node', 'missionbriefing');
                     resp.pubsub.subscription.should.have.property('subid');
@@ -158,7 +138,7 @@ describe('stanza.io PubSub workflow', function () {
 
             function (cb) {
                 han.getSubscriptions('pubsub.rebels', '', function (err, subscriptions) {
-                    users.han.log('get:subscriptions', subscriptions);
+                    rebels().han.log('get:subscriptions', subscriptions);
 
                     subscriptions.pubsub.subscriptions.list[0].should.have.property('node', 'missionbriefing');
 
@@ -168,14 +148,14 @@ describe('stanza.io PubSub workflow', function () {
 
             function (cb) {
                 chewie.getDiscoItems('pubsub.rebels', '', function (err, items) {
-                    users.chewie.log('disco', items);
+                    rebels().chewie.log('disco', items);
                     cb();
                 });
             },
 
             function (cb) {
                 chewie.subscribeToNode('pubsub.rebels', 'missionbriefing', function (err, resp) {
-                    users.chewie.log('subscribe', resp);
+                    rebels().chewie.log('subscribe', resp);
 
                     resp.pubsub.subscription.should.have.property('node', 'missionbriefing');
                     resp.pubsub.subscription.should.have.property('subid');
@@ -186,7 +166,7 @@ describe('stanza.io PubSub workflow', function () {
 
             function (cb) {
                 chewie.getSubscriptions('pubsub.rebels', '', function (err, subscriptions) {
-                    users.chewie.log('get:subscriptions', subscriptions);
+                    rebels().chewie.log('get:subscriptions', subscriptions);
 
                     subscriptions.pubsub.subscriptions.list[0].should.have.property('node', 'missionbriefing');
 
@@ -198,27 +178,27 @@ describe('stanza.io PubSub workflow', function () {
                 async.parallel([
                     function(callback) {
                         han.once('pubsub:event', function (msg) {
-		                    users.han.log('pubsub:event', msg);
+                            rebels().han.log('pubsub:event', msg);
 
                             msg.event.updated.should.have.property('node', 'missionbriefing');
                             msg.event.updated.published[0].json.should.have.property('value', 'Mission info');
                             msg.event.updated.published[0].json.should.have.property('value2', 'Mission start');
                             msg.event.updated.published[0].json.should.have.property('value3', 'Mission crew');
 
-		                    callback();
-		                });
+                            callback();
+                        });
                     },
                     function(callback) {
                         chewie.once('pubsub:event', function (msg) {
-		                    users.chewie.log('pubsub:event', msg);
+                            rebels().chewie.log('pubsub:event', msg);
 
                             msg.event.updated.should.have.property('node', 'missionbriefing');
                             msg.event.updated.published[0].json.should.have.property('value', 'Mission info');
                             msg.event.updated.published[0].json.should.have.property('value2', 'Mission start');
                             msg.event.updated.published[0].json.should.have.property('value3', 'Mission crew');
 
-		                    callback();
-		                });
+                            callback();
+                        });
                     }
                 ],
                 
@@ -231,43 +211,43 @@ describe('stanza.io PubSub workflow', function () {
                 });
 
                 var item = {
-			    	json: {
-			        	value: 'Mission info',
+                    json: {
+                        value: 'Mission info',
                         value2: 'Mission start',
                         value3: 'Mission crew'
-			        }
-			    };
-            	admin.publish('pubsub.rebels', 'missionbriefing', item, function (err, resp) {
-            		users.admin.log('publish', resp);
+                    }
+                };
+                rebelsAdmin.publish('pubsub.rebels', 'missionbriefing', item, function (err, resp) {
+                    rebels().rebelsAdmin.log('publish', resp);
 
                     resp.pubsub.publish.should.have.property('node', 'missionbriefing');
                     resp.pubsub.publish.items[0].should.have.property('id');
 
-            	});
+                });
             },
 
             function (cb) {
-            	han.once('unsubscribed', function (msg) {
-                    users.han.log('unsubscribe', msg);
+                han.once('unsubscribed', function (msg) {
+                    rebels().han.log('unsubscribe', msg);
                 });
                 han.unsubscribeFromNode('pubsub.rebels', {node: 'missionbriefing', jid: han.jid.full}, function (err, resp) {
-            		users.han.log('unsubscribe', resp);
+                    rebels().han.log('unsubscribe', resp);
 
                     resp.should.have.property('from');
                     resp.from.should.have.property('full', 'pubsub.rebels');
                     resp.should.have.property('to');
                     resp.to.should.have.property('full', han.jid.full);
 
-            		cb();
+                    cb();
                 });
             },
 
             function (cb) {
-            	chewie.once('unsubscribed', function (msg) {
-                    users.chewie.log('unsubscribe', msg);
+                chewie.once('unsubscribed', function (msg) {
+                    rebels().chewie.log('unsubscribe', msg);
                 });
                 chewie.unsubscribeFromNode('pubsub.rebels', {node: 'missionbriefing', jid: chewie.jid.full}, function (err, resp) {
-                    users.chewie.log('unsubscribe', resp);
+                    rebels().chewie.log('unsubscribe', resp);
 
                     resp.should.have.property('from');
                     resp.from.should.have.property('full', 'pubsub.rebels');
@@ -285,10 +265,10 @@ describe('stanza.io PubSub workflow', function () {
     });
 
     after(function() {
-    	admin.deleteNode('pubsub.rebels', 'missionbriefing', function (err, resp) {});
+        rebelsAdmin.deleteNode('pubsub.rebels', 'missionbriefing', function (err, resp) {});
         chewie.disconnect();
         han.disconnect();
-        admin.disconnect();
+        rebelsAdmin.disconnect();
     });
     
 });
