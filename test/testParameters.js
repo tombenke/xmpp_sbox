@@ -59,7 +59,7 @@ module.exports.empire = function() {
             log:        logger.createLogger('sidious', { keysColor: 'yellow' }),
         },
         tarkin: {
-            jid:        'wilhuf.tarkin@empire',
+            jid:        'wilhuff.tarkin@empire',
             password:   'pass123',
             host:       'localhost',
             log:        logger.createLogger('tarkin', { keysColor: 'green' })

@@ -9,27 +9,13 @@ var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
 var logger = require('../libs/log');
+var empire = require('./testParameters').empire;
 
 var debug = false;
-
-var users = {
-    han: {
-        jid:      'han.solo@rebels',
-        password: 'pass123',
-        host:     'localhost',
-        log:      logger.createLogger('han.solo', { keysColor: 'cyan' })
-    },
-    chewie: {
-        jid:      'chewbacca@rebels',
-        password: 'pass123',
-        host:     'localhost',
-        log:      logger.createLogger('chewbacca', { keysColor: 'yellow' }),
-    }
-};
   
 describe('stanza.io messaging workflow', function () {
 
-    var han, chewie;
+    var vader, tarkin;
 
     it('Clients should connect and send messages to each other', function (done) {
         this.timeout(10000);
@@ -38,16 +24,16 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
 
-                han = XMPP.createClient({
-                    jid:        users.han.jid,
-                    password:   users.han.password,
+                tarkin = XMPP.createClient({
+                    jid:       empire().tarkin.jid,
+                    password:  empire().tarkin.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
 
-                chewie = XMPP.createClient({
-                    jid:       users.chewie.jid,
-                    password:  users.chewie.password,
+                vader = XMPP.createClient({
+                    jid:       empire().vader.jid,
+                    password:  empire().vader.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
@@ -57,11 +43,11 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 if (debug === true) {
-                    han.on('*', function (name, data) {
+                    tarkin.on('*', function (name, data) {
                         console.dir(name);
                         console.dir(data);
                     });
-                    chewie.on('*', function (name, data) {
+                    vader.on('*', function (name, data) {
                         console.dir(name);
                         console.dir(data);
                     });
@@ -70,49 +56,49 @@ describe('stanza.io messaging workflow', function () {
             },
 
             function (cb) {
-                han.once('session:started', function (data) {
-                    users.han.log('session:started', data);
+                tarkin.once('session:started', function (data) {
+                    empire().tarkin.log('session:started', data);
                     cb();
                 });
 
-                han.connect();
+                tarkin.connect();
             },
 
             function (cb) {
-                han.once('presence', function (data) {
-                    users.han.log('presence', data);
+                tarkin.once('presence', function (data) {
+                    empire().tarkin.log('presence', data);
                     cb();
                 });
-                han.sendPresence({});
+                tarkin.sendPresence({});
             },
 
             function (cb) {
-                han.getRoster(function (err, resp) {
-                    users.han.log('roster', resp);
+                tarkin.getRoster(function (err, resp) {
+                    empire().tarkin.log('roster', resp);
 
                     cb();
                 });
             },
 
             function (cb) {
-                chewie.once('session:started', function (data) {
-                    users.chewie.log('session:started', data);
+                vader.once('session:started', function (data) {
+                    empire().vader.log('session:started', data);
                     cb();
                 });
-                chewie.connect();
+                vader.connect();
             },
 
             function (cb) {
-                chewie.once('presence', function (data) {
-                    users.chewie.log('presence', data);
+                vader.once('presence', function (data) {
+                    empire().vader.log('presence', data);
                     cb();
                 });
-                chewie.sendPresence({});
+                vader.sendPresence({});
             },
 
             function (cb) {
-                han.getRoster(function (err, resp) {
-                    users.han.log('roster', resp);
+                tarkin.getRoster(function (err, resp) {
+                    empire().tarkin.log('roster', resp);
 
                     cb();
                 });
@@ -125,9 +111,8 @@ describe('stanza.io messaging workflow', function () {
     });
 
     after(function() {
-        chewie.disconnect();
-        han.disconnect();
+        vader.disconnect();
+        tarkin.disconnect();
     });
     
 });
-
