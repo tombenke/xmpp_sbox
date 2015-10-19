@@ -31,7 +31,7 @@ var users = {
 
 describe('stanza.io PubSub workflow', function () {
 
-    var admin, han, chewie, hanFullJid, chewieFullJid;
+    var admin, han, chewie;
 
     it('Admin should create a node, publish an item, and others should receive that', function (done) {
         this.timeout(10000);
