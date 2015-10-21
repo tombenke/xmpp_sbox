@@ -7,6 +7,7 @@ var async = require('async');
 var logger = require('../libs/log');
 var rebels = require('./testParameters').rebels();
 
+
 var debug = false;
   
 describe('XMPP message sending scenario', function () {

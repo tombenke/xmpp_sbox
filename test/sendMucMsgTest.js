@@ -5,37 +5,38 @@ var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
 var logger = require('../libs/log');
-var rebels = require('./testParameters').rebels;
+var rebels = require('./testParameters').rebels();
+
 
 var debug = false;
 
-describe('stanza.io messaging workflow', function () {
+describe('XMPP multi-user chat scenario', function () {
 
     var han, chewie, r2d2;
 
-    it('Clients should connect, join room and send multi-user chat messages to each other', function (done) {
-        this.timeout(10000);
+    it('clients should connect, join room and send multi-user chat messages', function (done) {
+        this.timeout(3000);
 
         async.series([
 
             function (cb) {
                 chewie = XMPP.createClient({
-                    jid:       rebels().chewie.jid,
-                    password:  rebels().chewie.password,
+                    jid:       rebels.chewie.jid,
+                    password:  rebels.chewie.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
 
                 han = XMPP.createClient({
-                    jid:        rebels().han.jid,
-                    password:   rebels().han.password,
+                    jid:        rebels.han.jid,
+                    password:   rebels.han.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
 
                 r2d2 = XMPP.createClient({
-                    jid:        rebels().r2d2.jid,
-                    password:   rebels().r2d2.password,
+                    jid:        rebels.r2d2.jid,
+                    password:   rebels.r2d2.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
@@ -60,7 +61,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.once('session:started', function (data) {
-                    rebels().chewie.log('session:started', data);
+                    rebels.chewie.log('session:started', data);
                     cb();
                 });
                 chewie.connect();
@@ -68,7 +69,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.once('presence', function (data) {
-                    rebels().chewie.log('presence', data);
+                    rebels.chewie.log('presence', data);
                     cb();
                 });
                 chewie.sendPresence({});
@@ -76,7 +77,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.once('session:started', function (data) {
-                    rebels().han.log('session:started', data);
+                    rebels.han.log('session:started', data);
                     cb();
                 });
                 han.connect();
@@ -84,7 +85,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.once('presence', function (data) {
-                    rebels().han.log('presence', data);
+                    rebels.han.log('presence', data);
                     cb();
                 });
                 han.sendPresence({});
@@ -92,7 +93,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 r2d2.once('session:started', function (data) {
-                    rebels().r2d2.log('session:started', data);
+                    rebels.r2d2.log('session:started', data);
                     cb();
                 });
                 r2d2.connect();
@@ -100,7 +101,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 r2d2.once('presence', function (data) {
-                    rebels().r2d2.log('presence', data);
+                    rebels.r2d2.log('presence', data);
                     cb();
                 });
                 r2d2.sendPresence({});
@@ -108,11 +109,11 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.once('muc:join', function (data) {
-                    rebels().han.log('muc:join', data);
+                    rebels.han.log('muc:join', data);
 
                     data.should.have.property('muc');
                     data.should.have.property('to');
-                    data.to.bare.should.be.equal(rebels().han.jid);
+                    data.to.bare.should.be.equal(rebels.han.jid);
                     data.should.have.property('from');
                     data.from.full.should.be.equal('conference@conference.rebels/Han');
                     data.should.have.property('type');
@@ -125,11 +126,11 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.once('muc:join', function (data) {
-                    rebels().chewie.log('muc:join', data);
+                    rebels.chewie.log('muc:join', data);
 
                     data.should.have.property('muc');
                     data.should.have.property('to');
-                    data.to.bare.should.be.equal(rebels().chewie.jid);
+                    data.to.bare.should.be.equal(rebels.chewie.jid);
                     data.should.have.property('from');
                     data.from.full.should.be.equal('conference@conference.rebels/Chewie');
                     data.should.have.property('type');
@@ -142,11 +143,11 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 r2d2.once('muc:join', function (data) {
-                    rebels().r2d2.log('muc:join', data);
+                    rebels.r2d2.log('muc:join', data);
 
                     data.should.have.property('muc');
                     data.should.have.property('to');
-                    data.to.bare.should.be.equal(rebels().r2d2.jid);
+                    data.to.bare.should.be.equal(rebels.r2d2.jid);
                     data.should.have.property('from');
                     data.from.full.should.be.equal('conference@conference.rebels/R2');
                     data.should.have.property('type');
@@ -161,10 +162,10 @@ describe('stanza.io messaging workflow', function () {
                 async.parallel([
                     function(callback){
                         han.once('message', function (msg) {
-                            rebels().han.log('message', msg);
+                            rebels.han.log('message', msg);
 
                             msg.should.have.property('to');
-                            msg.to.bare.should.be.equal(rebels().han.jid);
+                            msg.to.bare.should.be.equal(rebels.han.jid);
                             msg.should.have.property('from');
                             msg.from.full.should.be.equal('conference@conference.rebels/Han');
                             msg.should.have.property('body', 'Anybody there?');
@@ -174,10 +175,10 @@ describe('stanza.io messaging workflow', function () {
                     },
                     function(callback){
                         chewie.once('message', function (msg) {
-                            rebels().chewie.log('message', msg);
+                            rebels.chewie.log('message', msg);
 
                             msg.should.have.property('to');
-                            msg.to.bare.should.be.equal(rebels().chewie.jid);
+                            msg.to.bare.should.be.equal(rebels.chewie.jid);
                             msg.should.have.property('from');
                             msg.from.full.should.be.equal('conference@conference.rebels/Han');
                             msg.should.have.property('body', 'Anybody there?');
@@ -187,10 +188,10 @@ describe('stanza.io messaging workflow', function () {
                     },
                     function(callback){
                         r2d2.once('message', function (msg) {
-                            rebels().r2d2.log('message', msg);
+                            rebels.r2d2.log('message', msg);
                             
                             msg.should.have.property('to');
-                            msg.to.bare.should.be.equal(rebels().r2d2.jid);
+                            msg.to.bare.should.be.equal(rebels.r2d2.jid);
                             msg.should.have.property('from');
                             msg.from.full.should.be.equal('conference@conference.rebels/Han');
                             msg.should.have.property('body', 'Anybody there?');
@@ -217,11 +218,11 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 han.once('muc:leave', function (data) {
-                    rebels().han.log('muc:leave', data);
+                    rebels.han.log('muc:leave', data);
 
                     data.should.have.property('muc');
                     data.should.have.property('to');
-                    data.to.bare.should.be.equal(rebels().han.jid);
+                    data.to.bare.should.be.equal(rebels.han.jid);
                     data.should.have.property('from');
                     data.from.full.should.be.equal('conference@conference.rebels/Han');
                     data.should.have.property('type');
@@ -234,11 +235,11 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 chewie.once('muc:leave', function (data) {
-                    rebels().chewie.log('muc:leave', data);
+                    rebels.chewie.log('muc:leave', data);
 
                     data.should.have.property('muc');
                     data.should.have.property('to');
-                    data.to.bare.should.be.equal(rebels().chewie.jid);
+                    data.to.bare.should.be.equal(rebels.chewie.jid);
                     data.should.have.property('from');
                     data.from.full.should.be.equal('conference@conference.rebels/Chewie');
                     data.should.have.property('type');
@@ -251,11 +252,11 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 r2d2.once('muc:leave', function (data) {
-                    rebels().r2d2.log('muc:leave', data);
+                    rebels.r2d2.log('muc:leave', data);
 
                     data.should.have.property('muc');
                     data.should.have.property('to');
-                    data.to.bare.should.be.equal(rebels().r2d2.jid);
+                    data.to.bare.should.be.equal(rebels.r2d2.jid);
                     data.should.have.property('from');
                     data.from.full.should.be.equal('conference@conference.rebels/R2');
                     data.should.have.property('type');
