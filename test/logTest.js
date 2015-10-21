@@ -5,7 +5,7 @@ var logger = require('../libs/log');
 
 describe('Logger test', function () {
 
-    it('should correctly print deeply nested json objects', function () {
+    it.skip('should correctly print deeply nested json objects', function () {
 
         var tst = {
             log: logger.createLogger('Test logger', { keysColor: 'cyan' })
