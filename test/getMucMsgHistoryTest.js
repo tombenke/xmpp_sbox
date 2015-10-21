@@ -4,17 +4,17 @@
 var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
-var logger = require('../libs/log');
 var rebels = require('./testParameters').rebels;
+
 
 var debug = false;
 
-describe('stanza.io messaging workflow', function () {
+describe('XMPP multi-user chat message history', function () {
 
     var han, chewie, r2d2, leia;
 
-    it('Client Leia should receive sent messages after join', function (done) {
-        this.timeout(10000);
+    it('clients should see message history after joining to a room', function (done) {
+        this.timeout(3000);
 
         async.series([
 

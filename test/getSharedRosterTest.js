@@ -8,32 +8,33 @@
 var XMPP = require('stanza.io');
 var should = require('should');
 var async = require('async');
-var logger = require('../libs/log');
-var empire = require('./testParameters').empire;
+var empire = require('./testParameters').empire();
+
 
 var debug = false;
   
-describe('stanza.io messaging workflow', function () {
+// TODO - missing tests
+describe('XMPP shared roster', function () {
 
     var vader, tarkin;
 
-    it('Clients should connect and send messages to each other', function (done) {
-        this.timeout(10000);
+    it('clients should see shared roster', function (done) {
+        this.timeout(3000);
 
         async.series([
 
             function (cb) {
 
                 tarkin = XMPP.createClient({
-                    jid:       empire().tarkin.jid,
-                    password:  empire().tarkin.password,
+                    jid:       empire.tarkin.jid,
+                    password:  empire.tarkin.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
 
                 vader = XMPP.createClient({
-                    jid:       empire().vader.jid,
-                    password:  empire().vader.password,
+                    jid:       empire.vader.jid,
+                    password:  empire.vader.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
@@ -57,7 +58,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 tarkin.once('session:started', function (data) {
-                    empire().tarkin.log('session:started', data);
+                    empire.tarkin.log('session:started', data);
                     cb();
                 });
 
@@ -66,7 +67,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 tarkin.once('presence', function (data) {
-                    empire().tarkin.log('presence', data);
+                    empire.tarkin.log('presence', data);
                     cb();
                 });
                 tarkin.sendPresence({});
@@ -74,7 +75,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 tarkin.getRoster(function (err, resp) {
-                    empire().tarkin.log('roster', resp);
+                    empire.tarkin.log('roster', resp);
 
                     cb();
                 });
@@ -82,7 +83,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 vader.once('session:started', function (data) {
-                    empire().vader.log('session:started', data);
+                    empire.vader.log('session:started', data);
                     cb();
                 });
                 vader.connect();
@@ -90,7 +91,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 vader.once('presence', function (data) {
-                    empire().vader.log('presence', data);
+                    empire.vader.log('presence', data);
                     cb();
                 });
                 vader.sendPresence({});
@@ -98,7 +99,7 @@ describe('stanza.io messaging workflow', function () {
 
             function (cb) {
                 tarkin.getRoster(function (err, resp) {
-                    empire().tarkin.log('roster', resp);
+                    empire.tarkin.log('roster', resp);
 
                     cb();
                 });
