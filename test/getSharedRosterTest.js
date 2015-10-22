@@ -12,11 +12,10 @@ var empire = require('./testParameters').empire();
 
 
 var debug = false;
-  
-// TODO - missing tests
+
 describe('XMPP shared roster', function () {
 
-    var vader, tarkin;
+    var vader, sidious;
 
     it('clients should see shared roster', function (done) {
         this.timeout(3000);
@@ -25,9 +24,9 @@ describe('XMPP shared roster', function () {
 
             function (cb) {
 
-                tarkin = XMPP.createClient({
-                    jid:       empire.tarkin.jid,
-                    password:  empire.tarkin.password,
+                sidious = XMPP.createClient({
+                    jid:       empire.sidious.jid,
+                    password:  empire.sidious.password,
                     wsURL:     'ws://localhost:5280/websocket',
                     transport: 'websocket'
                 });
@@ -44,7 +43,7 @@ describe('XMPP shared roster', function () {
 
             function (cb) {
                 if (debug === true) {
-                    tarkin.on('*', function (name, data) {
+                    sidious.on('*', function (name, data) {
                         console.dir(name);
                         console.dir(data);
                     });
@@ -57,25 +56,29 @@ describe('XMPP shared roster', function () {
             },
 
             function (cb) {
-                tarkin.once('session:started', function (data) {
-                    empire.tarkin.log('session:started', data);
+                sidious.once('session:started', function (data) {
+                    empire.sidious.log('session:started', data);
                     cb();
                 });
 
-                tarkin.connect();
+                sidious.connect();
             },
 
             function (cb) {
-                tarkin.once('presence', function (data) {
-                    empire.tarkin.log('presence', data);
+                sidious.once('presence', function (data) {
+                    empire.sidious.log('presence', data);
                     cb();
                 });
-                tarkin.sendPresence({});
+                sidious.sendPresence({});
             },
 
             function (cb) {
-                tarkin.getRoster(function (err, resp) {
-                    empire.tarkin.log('roster', resp);
+                sidious.getRoster(function (err, resp) {
+                    empire.sidious.log('roster', resp);
+
+                    resp.roster.should.have.property('items');
+                    resp.roster.items[0].should.have.property('groups');
+                    resp.roster.items[0].groups[0].should.be.exactly('Sith Lords');
 
                     cb();
                 });
@@ -98,8 +101,12 @@ describe('XMPP shared roster', function () {
             },
 
             function (cb) {
-                tarkin.getRoster(function (err, resp) {
-                    empire.tarkin.log('roster', resp);
+                sidious.getRoster(function (err, resp) {
+                    empire.sidious.log('roster', resp);
+
+                    resp.roster.should.have.property('items');
+                    resp.roster.items[0].should.have.property('groups');
+                    resp.roster.items[0].groups[0].should.be.exactly('Sith Lords');
 
                     cb();
                 });
@@ -113,7 +120,7 @@ describe('XMPP shared roster', function () {
 
     after(function() {
         vader.disconnect();
-        tarkin.disconnect();
+        sidious.disconnect();
     });
     
 });
