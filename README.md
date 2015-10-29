@@ -8,6 +8,9 @@ It contains JavaScript implementation of basic tools and scenarios to do instant
 
 In order to run the code, you need a working XMPP server, such as ejabberd.
 
+## Test environment
+Follow the steps in [INSTRUCTIONS.md](INSTRUCTIONS.md) file to set up testing environment including ejabberd server installation and configuration, creating hosts and populate them automatically with test users, etc.
+
 ## Features and scenarios to demonstrate
 
 ### Agents
